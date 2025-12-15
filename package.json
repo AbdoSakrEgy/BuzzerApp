@@ -28,6 +28,13 @@
     "zod": "^4.2.0"
   },
   "devDependencies": {
-    "@types/node": "^25.0.2"
+    "@types/cors": "^2.8.19",
+    "@types/crypto-js": "^4.2.2",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^25.0.2",
+    "@types/nodemailer": "^7.0.4",
+    "@types/stripe": "^6.25.1"
   }
 }
