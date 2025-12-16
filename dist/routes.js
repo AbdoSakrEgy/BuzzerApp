@@ -9,8 +9,12 @@ const admin_controller_1 = __importDefault(require("./modules/admin/admin.contro
 const auth_controller_1 = __importDefault(require("./modules/auth/auth.controller"));
 const customer_controller_1 = __importDefault(require("./modules/customer/customer.controller"));
 const product_controller_1 = __importDefault(require("./modules/product/product.controller"));
+const address_controller_1 = __importDefault(require("./modules/address/address.controller"));
+const cart_controller_1 = __importDefault(require("./modules/cart/cart.controller"));
 router.use("/auth", auth_controller_1.default);
 router.use("/admin", admin_controller_1.default);
 router.use("/customer", customer_controller_1.default);
 router.use("/product", product_controller_1.default);
+router.use("/address", address_controller_1.default);
+router.use("/cart", cart_controller_1.default);
 exports.default = router;

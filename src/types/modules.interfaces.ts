@@ -64,3 +64,7 @@ export interface IRestaurantService {
 export interface IAddressService {
   //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
 }
+
+export interface ICartService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
