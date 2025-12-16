@@ -6,6 +6,7 @@ exports.sequelize = new sequelize_1.Sequelize("buzzer", "root", "root", {
     host: "localhost",
     port: 3306,
     dialect: "mysql",
+    logging: false,
 });
 const DBConnection = async () => {
     try {

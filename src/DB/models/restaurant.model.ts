@@ -23,7 +23,6 @@ export const Restaurant = sequelize.define(
       unique: true,
       validate: { isEmail: true },
     },
-    isEmailConfirmed: { type: DataTypes.BOOLEAN, defaultValue: false },
     password: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -38,7 +37,6 @@ export const Restaurant = sequelize.define(
     credentialsChangedAt: { type: DataTypes.DATE, allowNull: true },
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     deletedBy: { type: DataTypes.INTEGER, allowNull: true },
-    is2FAActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     profileImage_public_id: { type: DataTypes.STRING, allowNull: true },
     profileImage_secure_url: { type: DataTypes.STRING, allowNull: true },
   },

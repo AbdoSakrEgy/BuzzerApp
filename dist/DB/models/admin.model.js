@@ -34,10 +34,6 @@ exports.Admin = db_connection_1.sequelize.define("admins", {
         unique: true,
         validate: { isEmail: true },
     },
-    isEmailConfirmed: {
-        type: sequelize_1.DataTypes.BOOLEAN,
-        defaultValue: false,
-    },
     password: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
@@ -52,7 +48,6 @@ exports.Admin = db_connection_1.sequelize.define("admins", {
     credentialsChangedAt: { type: sequelize_1.DataTypes.DATE, allowNull: true },
     isActive: { type: sequelize_1.DataTypes.BOOLEAN, defaultValue: true },
     deletedBy: { type: sequelize_1.DataTypes.INTEGER, allowNull: true },
-    is2FAActive: { type: sequelize_1.DataTypes.BOOLEAN, defaultValue: true },
     profileImage_public_id: { type: sequelize_1.DataTypes.STRING, allowNull: true },
     profileImage_secure_url: { type: sequelize_1.DataTypes.STRING, allowNull: true },
 }, {

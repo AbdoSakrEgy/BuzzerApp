@@ -12,10 +12,12 @@ import { uploadProfileImageSchema } from "./admin.validation";
 import { IAdminService } from "../../types/admin.module.type";
 import {
   deleteAccountDTO,
+  deleteMultiFilesDTO,
   logincheckOtpDTO,
   loginDTO,
   registerCheckOtpDTO,
   registerDTO,
+  updateBasicInfoDTO,
 } from "./admin.dto";
 import { createJwt } from "../../utils/jwt";
 import { createOtp } from "../../utils/createOtp";
@@ -32,7 +34,7 @@ export class AdminService implements IAdminService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const { type, fullName, email, phone, password }: registerDTO = req.body;
+    const { phone }: registerDTO = req.body;
     // step: check admin existence
     const checkAdmin = await Admin.findOne({ where: { phone } });
     if (checkAdmin) {
@@ -76,16 +78,31 @@ export class AdminService implements IAdminService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const { type, fullName, email, phone, password, otp }: registerCheckOtpDTO =
+    const { fullName, email, phone, password, otp }: registerCheckOtpDTO =
       req.body;
     // step: check otp from firebase
     // ????????????????????
     if (false) {
       throw new AppError(HttpStatusCode.UNAUTHORIZED, "Invalid OTP");
     }
+    // step: check if email already exists
+    const existingAdmin = await Admin.findOne({ where: { email } });
+    if (existingAdmin) {
+      throw new AppError(
+        HttpStatusCode.BAD_REQUEST,
+        "Admin with this email already exists"
+      );
+    }
+    // step: check if phone already exists
+    const existingAdminWithPhone = await Admin.findOne({ where: { phone } });
+    if (existingAdminWithPhone) {
+      throw new AppError(
+        HttpStatusCode.BAD_REQUEST,
+        "Admin with this phone already exists"
+      );
+    }
     // step: create admin
     const admin = await Admin.create({
-      type,
       fullName,
       email,
       phone,
@@ -94,7 +111,7 @@ export class AdminService implements IAdminService {
     if (!admin) {
       throw new AppError(
         HttpStatusCode.INTERNAL_SERVER_ERROR,
-        "Creation failed"
+        "Admin did not created"
       );
     }
     // step: create token
@@ -141,7 +158,7 @@ export class AdminService implements IAdminService {
     }
     // step: create token
     const accessToken = createJwt(
-      { userId: admin.get("id"), usrType: RegisterEnum.ADMIN },
+      { userId: admin.get("id"), userType: RegisterEnum.ADMIN },
       process.env.ACCESS_SEGNATURE as string,
       {
         expiresIn: "1h",
@@ -149,7 +166,7 @@ export class AdminService implements IAdminService {
       }
     );
     const refreshToken = createJwt(
-      { userId: admin.get("id"), usrType: RegisterEnum.ADMIN },
+      { userId: admin.get("id"), userType: RegisterEnum.ADMIN },
       process.env.REFRESH_SEGNATURE as string,
       {
         expiresIn: "7d",
@@ -161,29 +178,6 @@ export class AdminService implements IAdminService {
       status: HttpStatusCode.OK,
       message: "Loggedin successfully",
       data: { accessToken, refreshToken },
-    });
-  };
-
-  // ============================ deleteAccount ============================
-  deleteAccount = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> => {
-    const user = res.locals.user;
-    const { accountId, accountType }: deleteAccountDTO = req.body;
-    // step: check account existence
-    if (accountType == RegisterEnum.ADMIN) {
-      await Admin.destroy({ where: { id: accountId } });
-    } else if (accountType == RegisterEnum.CUSTOMER) {
-    } else if (accountType == RegisterEnum.CAFE) {
-    } else if (accountType == RegisterEnum.RESTAURENT) {
-    }
-    return responseHandler({
-      res,
-      status: HttpStatusCode.OK,
-      message: "Account deleted successfully",
-      data: {},
     });
   };
 
@@ -221,12 +215,21 @@ export class AdminService implements IAdminService {
     return responseHandler({ res, data: { accessToken } });
   };
 
-  //! ============================ profile ============================
-  profile = async (
+  // ============================ deleteAccount ============================
+  deleteAccount = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
+    const user = res.locals.user;
+    const { accountId, accountType }: deleteAccountDTO = req.body;
+    // step: check account existence
+    if (accountType == RegisterEnum.ADMIN) {
+      await Admin.destroy({ where: { id: accountId } });
+    } else if (accountType == RegisterEnum.CUSTOMER) {
+    } else if (accountType == RegisterEnum.CAFE) {
+    } else if (accountType == RegisterEnum.RESTAURENT) {
+    }
     return responseHandler({
       res,
       status: HttpStatusCode.OK,
@@ -235,108 +238,142 @@ export class AdminService implements IAdminService {
     });
   };
 
-  // //! ============================ uploadProfileImage ============================
-  // uploadProfileImage = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> => {
-  //   const user = res.locals.user;
-  //   // step: validate multipart/form-data req
-  //   const parsed = uploadProfileImageSchema.safeParse({
-  //     ...req.body,
-  //     profileImage: req.file,
-  //   });
-  //   if (!parsed.success) {
-  //     const errors = parsed.error.issues
-  //       .map((e) => `${e.path.join(".")}: ${e.message}`)
-  //       .join("; ");
-  //     throw new AppError(HttpStatusCode.BAD_REQUEST, errors);
-  //   }
-  //   // step: upload image
-  //   const Key = await uploadSingleSmallFileS3({
-  //     dest: `users/${user._id}/profileImage`,
-  //     fileFromMulter: req.file as Express.Multer.File,
-  //   });
-  //   // step: update user
-  //   const updatedUser = await UserModel.findOneAndUpdate(
-  //     { _id: user._id },
-  //     { $set: { profileImage: Key } }
-  //   );
-  //   return responseHandler({
-  //     res,
-  //     message: "Profile image uploaded successfully",
-  //     data: { Key },
-  //   });
-  // };
+  // ============================ profile ============================
+  profile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    return responseHandler({
+      res,
+      status: HttpStatusCode.OK,
+      data: { user },
+    });
+  };
 
-  // //! ============================ getFile ============================
-  // getFile = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> => {
-  //   const path = req.params.path as unknown as string[];
-  //   const Key = path.join("/");
-  //   const url = await createPresignedUrlToGetFileS3({ Key });
-  //   return responseHandler({
-  //     res,
-  //     message: "File URL generated successfully",
-  //     data: { url },
-  //   });
-  // };
+  // ============================ uploadProfileImage ============================
+  uploadProfileImage = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    // step: validate multipart/form-data req
+    const parsed = uploadProfileImageSchema.safeParse({
+      ...req.body,
+      profileImage: req.file,
+    });
+    if (!parsed.success) {
+      const errors = parsed.error.issues
+        .map((e) => `${e.path.join(".")}: ${e.message}`)
+        .join("; ");
+      throw new AppError(HttpStatusCode.BAD_REQUEST, errors);
+    }
+    // step: upload image
+    const Key = await uploadSingleSmallFileS3({
+      dest: `admins/${user.id}/profileImage`,
+      fileFromMulter: req.file as Express.Multer.File,
+    });
+    // step: update user
+    await Admin.update({ profileImage: Key }, { where: { id: user.id } });
+    return responseHandler({
+      res,
+      message: "Profile image uploaded successfully",
+      data: { Key },
+    });
+  };
 
-  // //! ============================ deleteFile ============================
-  // deleteFile = async (req: Request, res: Response, next: NextFunction) => {
-  //   const path = req.params.path as unknown as string[];
-  //   const Key = path.join("/");
-  //   const result = await deleteFileS3({ Key });
-  //   return responseHandler({
-  //     res,
-  //     message: "File deleted successfully",
-  //   });
-  // };
+  // ============================ getFile ============================
+  getFile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const path = req.params.path as unknown as string[];
+    const Key = path.join("/");
+    const url = await createPresignedUrlToGetFileS3({ Key });
+    return responseHandler({
+      res,
+      message: "File URL generated successfully",
+      data: { url },
+    });
+  };
 
-  // //! ============================ deleteMultiFiles ============================
-  // deleteMultiFiles = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ) => {
-  //   const { Keys, Quiet = false }: deleteMultiFilesDTO = req.body;
-  //   const result = await deleteMultiFilesS3({ Keys, Quiet });
-  //   return responseHandler({
-  //     res,
-  //     message: "Files deleted successfully",
-  //   });
-  // };
+  // ============================ deleteFile ============================
+  deleteFile = async (req: Request, res: Response, next: NextFunction) => {
+    const path = req.params.path as unknown as string[];
+    const Key = path.join("/");
+    const result = await deleteFileS3({ Key });
+    return responseHandler({
+      res,
+      message: "File deleted successfully",
+    });
+  };
 
-  // //! ============================ updateBasicInfo ============================
-  // updateBasicInfo = async (
-  //   req: Request,
-  //   res: Response,
-  //   next: NextFunction
-  // ): Promise<Response> => {
-  //   const user = res.locals.user;
-  //   const { firstName, lastName, age, gender, phone }: updateBasicInfoDTO =
-  //     req.body;
-  //   // step: update basic info
-  //   const updatedUser = await UserModel.findOneAndUpdate(
-  //     { _id: user._id },
-  //     { $set: { firstName, lastName, age, gender, phone } },
-  //     { new: true }
-  //   );
-  //   if (!updatedUser) {
-  //     return responseHandler({
-  //       res,
-  //       message: "Error while update user",
-  //       status: 500,
-  //     });
-  //   }
-  //   return responseHandler({
-  //     res,
-  //     message: "User updated successfully",
-  //     data: { user: updatedUser },
-  //   });
-  // };
+  // ============================ deleteMultiFiles ============================
+  deleteMultiFiles = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { Keys, Quiet = false }: deleteMultiFilesDTO = req.body;
+    const result = await deleteMultiFilesS3({ Keys, Quiet });
+    return responseHandler({
+      res,
+      message: "Files deleted successfully",
+    });
+  };
+
+  // ============================ updateBasicInfo ============================
+  updateBasicInfo = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    const { fullName, age, gender, email }: updateBasicInfoDTO = req.body;
+    // step: check email validation
+    if (email) {
+      const existingAdmin = await Admin.findOne({ where: { email } });
+      if (existingAdmin && existingAdmin.get("id") !== user.id) {
+        throw new AppError(HttpStatusCode.BAD_REQUEST, "Email already exists");
+      }
+    }
+    // step: update basic info
+    const updatedAdmin = await Admin.update(
+      { fullName, age, gender },
+      { where: { id: user.id } }
+    );
+    if (!updatedAdmin) {
+      return responseHandler({
+        res,
+        message: "Error while update admin",
+        status: 500,
+      });
+    }
+    return responseHandler({
+      res,
+      message: "Admin updated successfully",
+      data: { admin: updatedAdmin },
+    });
+  };
+
+  // ============================ logout ============================
+  logout = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    // step: change credentialsChangedAt
+    const updatedAdmin = await Admin.update(
+      { credentialsChangedAt: new Date(Date.now()) },
+      { where: { id: user.id } }
+    );
+    return responseHandler({
+      res,
+      message: "Logged out successfully",
+    });
+  };
 }
