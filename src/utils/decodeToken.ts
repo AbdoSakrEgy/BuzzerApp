@@ -1,16 +1,13 @@
-import { NextFunction } from "express";
-import { UserModel } from "../modules/user/user.model.js";
 import { MyJwtPayload, verifyJwt } from "./jwt.js";
-import { IUser } from "../types/user.module.type.js";
 import { AppError } from "../core/errors/app.error.js";
 import { HttpStatusCode } from "../core/http/http.status.code.js";
+import { RegisterEnum } from "../types/auth.module.type.js";
+import { Admin } from "../DB/models/admin.model.js";
 
 export enum TokenTypesEnum {
   access = "access",
   refresh = "refresh",
 }
-
-const userModel = UserModel;
 
 export const decodeToken = async ({
   authorization,
@@ -36,8 +33,15 @@ export const decodeToken = async ({
     privateKey = process.env.REFRESH_SEGNATURE as string;
   }
   let payload = verifyJwt({ token, privateKey }); // result || error
+  // step: check user existence
+  let user: any;
+  if (payload.userType == RegisterEnum.ADMIN) {
+    user = await Admin.findOne({ where: { id: payload.userId } });
+  } else if (payload.userType == RegisterEnum.CUSTOMER) {
+  } else if (payload.userType == RegisterEnum.CAFE) {
+  } else if (payload.userType == RegisterEnum.RESTAURENT) {
+  }
   // step: user existence
-  const user = await userModel.findOne({ _id: payload.userId });
   if (!user) {
     throw new AppError(HttpStatusCode.NOT_FOUND, "User not found");
   }

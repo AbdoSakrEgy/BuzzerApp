@@ -2,7 +2,7 @@ import { JwtPayload, Secret, sign, SignOptions, verify } from "jsonwebtoken";
 
 export interface MyJwtPayload {
   userId: string;
-  userEmail: string;
+  userType: string;
   iat: number;
   exp: number;
   jti: string;

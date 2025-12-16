@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { UserModel } from "../../modules/user/user.model";
-import { PricingPlanEnum } from "../../types/user.module.type";
 import { AppError } from "../errors/app.error";
 import { HttpStatusCode } from "../http/http.status.code";
+import { PricingPlanEnum } from "../../types/global.types";
 
 export const plan = (allowedPlans: string[], creditCost: number = 0) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -32,11 +31,11 @@ export const plan = (allowedPlans: string[], creditCost: number = 0) => {
       );
     }
     // step: calculate new credits
-    const newAvaliableCredits = userAvaliableCredits - creditCost;
-    const updatedUser = await UserModel.findOneAndUpdate(
-      { _id: user._id },
-      { $set: { avaliableCredits: newAvaliableCredits } }
-    );
+    // const newAvaliableCredits = userAvaliableCredits - creditCost;
+    // const updatedUser = await UserModel.findOneAndUpdate(
+    //   { _id: user._id },
+    //   { $set: { avaliableCredits: newAvaliableCredits } }
+    // );
     next();
   };
 };

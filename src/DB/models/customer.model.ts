@@ -1,6 +1,6 @@
 import { sequelize } from "../../DB/db.connection";
 import { DataTypes } from "sequelize";
-import { PricingPlanEnum } from "../../types/user.module.type";
+import { PricingPlanEnum } from "../../types/global.types";
 
 export const Customer = sequelize.define(
   "customers",
