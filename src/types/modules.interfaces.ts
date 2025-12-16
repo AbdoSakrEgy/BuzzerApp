@@ -68,3 +68,6 @@ export interface IAddressService {
 export interface ICartService {
   //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
 }
+export interface IOrderService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}

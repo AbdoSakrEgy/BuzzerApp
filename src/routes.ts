@@ -6,6 +6,7 @@ import customerRouter from "./modules/customer/customer.controller";
 import productRouter from "./modules/product/product.controller";
 import addressRouter from "./modules/address/address.controller";
 import cartRouter from "./modules/cart/cart.controller";
+import orderRouter from "./modules/order/order.controller";
 
 router.use("/auth", authRouter);
 router.use("/admin", adminRouter);
@@ -13,5 +14,6 @@ router.use("/customer", customerRouter);
 router.use("/product", productRouter);
 router.use("/address", addressRouter);
 router.use("/cart", cartRouter);
+router.use("/order", orderRouter);
 
 export default router;
