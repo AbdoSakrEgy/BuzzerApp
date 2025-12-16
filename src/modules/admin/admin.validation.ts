@@ -1,51 +1,5 @@
 import z from "zod";
-import { RegisterEnum } from "../../types/auth.module.type";
 import { GenderEnum } from "../../types/global.types";
-
-export const registerSchema = z.object({
-  phone: z.string(),
-});
-
-export const loginSchema = z.object({
-  phone: z.string(),
-});
-
-export const registerCheckOtpSchema = z
-  .object({
-    fullName: z.string().min(3).max(50),
-    email: z.email().optional(),
-    phone: z.string(),
-    password: z.string(),
-    otp: z.string(),
-  })
-  .superRefine((args, ctx) => {
-    if (args.phone) {
-      const clean = args.phone.replace(/[\s-]/g, "");
-      const phoneRegex = /^\+?[1-9]\d{7,14}$/;
-      if (!phoneRegex.test(clean)) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["phone"],
-          message: "Phone number is incorrect",
-        });
-      }
-    }
-    if (args.email) {
-      if (args.email == "zzzzz@gmail.com") {
-        ctx.addIssue({
-          code: "custom",
-          path: ["email"],
-          message:
-            "zzzzz@gmail.com not valid email to use :), test custom validation",
-        });
-      }
-    }
-  });
-
-export const loginCheckOtpSchema = z.object({
-  phone: z.string(),
-  otp: z.string(),
-});
 
 export const deleteAccountSchema = z.object({
   accountId: z.string(),
