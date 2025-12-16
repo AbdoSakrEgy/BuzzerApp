@@ -9,6 +9,10 @@ const createOtp_1 = require("../../utils/createOtp");
 const auth_module_type_1 = require("../../types/auth.module.type");
 const admin_model_1 = require("../../DB/models/admin.model");
 const decodeToken_1 = require("../../utils/decodeToken");
+const S3_services_1 = require("../../utils/S3-AWS/S3.services");
+const customer_model_1 = require("../../DB/models/customer.model");
+const cafe_model_1 = require("../../DB/models/cafe.model");
+const restaurant_model_1 = require("../../DB/models/restaurant.model");
 class AdminService {
     constructor() { }
     // ============================ register ============================
@@ -53,10 +57,13 @@ class AdminService {
             UserModel = admin_model_1.Admin;
         }
         else if (type == auth_module_type_1.RegisterEnum.CUSTOMER) {
+            UserModel = customer_model_1.Customer;
         }
         else if (type == auth_module_type_1.RegisterEnum.CAFE) {
+            UserModel = cafe_model_1.Cafe;
         }
         else if (type == auth_module_type_1.RegisterEnum.RESTAURENT) {
+            UserModel = restaurant_model_1.Restaurant;
         }
         // step: check otp from firebase
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -107,10 +114,13 @@ class AdminService {
             UserModel = admin_model_1.Admin;
         }
         else if (type == auth_module_type_1.RegisterEnum.CUSTOMER) {
+            UserModel = customer_model_1.Customer;
         }
         else if (type == auth_module_type_1.RegisterEnum.CAFE) {
+            UserModel = cafe_model_1.Cafe;
         }
         else if (type == auth_module_type_1.RegisterEnum.RESTAURENT) {
+            UserModel = restaurant_model_1.Restaurant;
         }
         // step: check otp from firebase
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -171,6 +181,36 @@ class AdminService {
             data: { user },
         });
     };
+    // ============================ getFile ============================
+    getFile = async (req, res, next) => {
+        const path = req.params.path;
+        const Key = path.join("/");
+        const url = await (0, S3_services_1.createPresignedUrlToGetFileS3)({ Key });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            message: "File URL generated successfully",
+            data: { url },
+        });
+    };
+    // ============================ deleteFile ============================
+    deleteFile = async (req, res, next) => {
+        const path = req.params.path;
+        const Key = path.join("/");
+        const result = await (0, S3_services_1.deleteFileS3)({ Key });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            message: "File deleted successfully",
+        });
+    };
+    // ============================ deleteMultiFiles ============================
+    deleteMultiFiles = async (req, res, next) => {
+        const { Keys, Quiet = false } = req.body;
+        const result = await (0, S3_services_1.deleteMultiFilesS3)({ Keys, Quiet });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            message: "Files deleted successfully",
+        });
+    };
     // ============================ logout ============================
     logout = async (req, res, next) => {
         const { type } = req.body;
@@ -179,10 +219,13 @@ class AdminService {
             UserModel = admin_model_1.Admin;
         }
         else if (type == auth_module_type_1.RegisterEnum.CUSTOMER) {
+            UserModel = customer_model_1.Customer;
         }
         else if (type == auth_module_type_1.RegisterEnum.CAFE) {
+            UserModel = cafe_model_1.Cafe;
         }
         else if (type == auth_module_type_1.RegisterEnum.RESTAURENT) {
+            UserModel = restaurant_model_1.Restaurant;
         }
         const user = res.locals.user;
         // step: change credentialsChangedAt

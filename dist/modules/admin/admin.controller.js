@@ -11,8 +11,5 @@ const router = (0, express_1.Router)();
 const adminService = new admin_service_1.AdminService();
 router.delete("/delete-account", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.deleteAccountSchema), adminService.deleteAccount);
 router.patch("/upload-profile-image", auth_middleware_1.auth, (0, multer_upload_1.multerUpload)({ storeIn: multer_type_1.StoreInEnum.MEMORY }).single("profileImage"), adminService.uploadProfileImage);
-router.get("/get-file/*path", adminService.getFile);
-router.delete("/delete-file/*path", adminService.deleteFile);
-router.delete("/delete-multi-files", (0, validation_middleware_1.validation)(admin_validation_1.deleteMultiFilesSchema), adminService.deleteMultiFiles);
 router.patch("/update-basic-info", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.updateBasicInfoSchema), adminService.updateBasicInfo);
 exports.default = router;

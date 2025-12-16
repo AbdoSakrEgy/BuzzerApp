@@ -12,7 +12,6 @@ import { uploadProfileImageSchema } from "./admin.validation";
 import { IAdminService } from "../../types/admin.module.type";
 import {
   deleteAccountDTO,
-  deleteMultiFilesDTO,
   updateBasicInfoDTO,
 } from "./admin.dto";
 import { RegisterEnum } from "../../types/auth.module.type";
@@ -73,47 +72,6 @@ export class AdminService implements IAdminService {
       res,
       message: "Profile image uploaded successfully",
       data: { Key },
-    });
-  };
-
-  // ============================ getFile ============================
-  getFile = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> => {
-    const path = req.params.path as unknown as string[];
-    const Key = path.join("/");
-    const url = await createPresignedUrlToGetFileS3({ Key });
-    return responseHandler({
-      res,
-      message: "File URL generated successfully",
-      data: { url },
-    });
-  };
-
-  // ============================ deleteFile ============================
-  deleteFile = async (req: Request, res: Response, next: NextFunction) => {
-    const path = req.params.path as unknown as string[];
-    const Key = path.join("/");
-    const result = await deleteFileS3({ Key });
-    return responseHandler({
-      res,
-      message: "File deleted successfully",
-    });
-  };
-
-  // ============================ deleteMultiFiles ============================
-  deleteMultiFiles = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    const { Keys, Quiet = false }: deleteMultiFilesDTO = req.body;
-    const result = await deleteMultiFilesS3({ Keys, Quiet });
-    return responseHandler({
-      res,
-      message: "Files deleted successfully",
     });
   };
 

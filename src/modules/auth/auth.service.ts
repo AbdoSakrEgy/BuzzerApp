@@ -4,6 +4,7 @@ import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
 import { IAdminService } from "../../types/admin.module.type";
 import {
+  deleteMultiFilesDTO,
   logincheckOtpDTO,
   loginDTO,
   logoutDTO,
@@ -15,7 +16,14 @@ import { createOtp } from "../../utils/createOtp";
 import { RegisterEnum } from "../../types/auth.module.type";
 import { Admin } from "../../DB/models/admin.model";
 import { decodeToken, TokenTypesEnum } from "../../utils/decodeToken";
-import { createPresignedUrlToGetFileS3 } from "../../utils/S3-AWS/S3.services";
+import {
+  createPresignedUrlToGetFileS3,
+  deleteFileS3,
+  deleteMultiFilesS3,
+} from "../../utils/S3-AWS/S3.services";
+import { Customer } from "../../DB/models/customer.model";
+import { Cafe } from "../../DB/models/cafe.model";
+import { Restaurant } from "../../DB/models/restaurant.model";
 
 export class AdminService implements IAdminService {
   constructor() {}
@@ -76,8 +84,11 @@ export class AdminService implements IAdminService {
     if (type == RegisterEnum.ADMIN) {
       UserModel = Admin;
     } else if (type == RegisterEnum.CUSTOMER) {
+      UserModel = Customer;
     } else if (type == RegisterEnum.CAFE) {
+      UserModel = Cafe;
     } else if (type == RegisterEnum.RESTAURENT) {
+      UserModel = Restaurant;
     }
     // step: check otp from firebase
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -149,8 +160,11 @@ export class AdminService implements IAdminService {
     if (type == RegisterEnum.ADMIN) {
       UserModel = Admin;
     } else if (type == RegisterEnum.CUSTOMER) {
+      UserModel = Customer;
     } else if (type == RegisterEnum.CAFE) {
+      UserModel = Cafe;
     } else if (type == RegisterEnum.RESTAURENT) {
+      UserModel = Restaurant;
     }
     // step: check otp from firebase
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -234,6 +248,47 @@ export class AdminService implements IAdminService {
     });
   };
 
+  // ============================ getFile ============================
+  getFile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const path = req.params.path as unknown as string[];
+    const Key = path.join("/");
+    const url = await createPresignedUrlToGetFileS3({ Key });
+    return responseHandler({
+      res,
+      message: "File URL generated successfully",
+      data: { url },
+    });
+  };
+
+  // ============================ deleteFile ============================
+  deleteFile = async (req: Request, res: Response, next: NextFunction) => {
+    const path = req.params.path as unknown as string[];
+    const Key = path.join("/");
+    const result = await deleteFileS3({ Key });
+    return responseHandler({
+      res,
+      message: "File deleted successfully",
+    });
+  };
+
+  // ============================ deleteMultiFiles ============================
+  deleteMultiFiles = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { Keys, Quiet = false }: deleteMultiFilesDTO = req.body;
+    const result = await deleteMultiFilesS3({ Keys, Quiet });
+    return responseHandler({
+      res,
+      message: "Files deleted successfully",
+    });
+  };
+
   // ============================ logout ============================
   logout = async (
     req: Request,
@@ -245,8 +300,11 @@ export class AdminService implements IAdminService {
     if (type == RegisterEnum.ADMIN) {
       UserModel = Admin;
     } else if (type == RegisterEnum.CUSTOMER) {
+      UserModel = Customer;
     } else if (type == RegisterEnum.CAFE) {
+      UserModel = Cafe;
     } else if (type == RegisterEnum.RESTAURENT) {
+      UserModel = Restaurant;
     }
     const user = res.locals.user;
     // step: change credentialsChangedAt

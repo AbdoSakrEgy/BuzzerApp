@@ -6,6 +6,9 @@ const app_error_js_1 = require("../core/errors/app.error.js");
 const http_status_code_js_1 = require("../core/http/http.status.code.js");
 const auth_module_type_js_1 = require("../types/auth.module.type.js");
 const admin_model_js_1 = require("../DB/models/admin.model.js");
+const customer_model_js_1 = require("../DB/models/customer.model.js");
+const cafe_model_js_1 = require("../DB/models/cafe.model.js");
+const restaurant_model_js_1 = require("../DB/models/restaurant.model.js");
 var TokenTypesEnum;
 (function (TokenTypesEnum) {
     TokenTypesEnum["access"] = "access";
@@ -36,10 +39,13 @@ const decodeToken = async ({ authorization, tokenType = TokenTypesEnum.access, }
         user = await admin_model_js_1.Admin.findOne({ where: { id: payload.userId } });
     }
     else if (payload.userType == auth_module_type_js_1.RegisterEnum.CUSTOMER) {
+        user = await customer_model_js_1.Customer.findOne({ where: { id: payload.userId } });
     }
     else if (payload.userType == auth_module_type_js_1.RegisterEnum.CAFE) {
+        user = await cafe_model_js_1.Cafe.findOne({ where: { id: payload.userId } });
     }
     else if (payload.userType == auth_module_type_js_1.RegisterEnum.RESTAURENT) {
+        user = await restaurant_model_js_1.Restaurant.findOne({ where: { id: payload.userId } });
     }
     // step: user existence
     if (!user) {

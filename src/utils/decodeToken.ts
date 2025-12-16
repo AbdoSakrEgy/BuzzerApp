@@ -3,6 +3,9 @@ import { AppError } from "../core/errors/app.error.js";
 import { HttpStatusCode } from "../core/http/http.status.code.js";
 import { RegisterEnum } from "../types/auth.module.type.js";
 import { Admin } from "../DB/models/admin.model.js";
+import { Customer } from "../DB/models/customer.model.js";
+import { Cafe } from "../DB/models/cafe.model.js";
+import { Restaurant } from "../DB/models/restaurant.model.js";
 
 export enum TokenTypesEnum {
   access = "access",
@@ -38,8 +41,11 @@ export const decodeToken = async ({
   if (payload.userType == RegisterEnum.ADMIN) {
     user = await Admin.findOne({ where: { id: payload.userId } });
   } else if (payload.userType == RegisterEnum.CUSTOMER) {
+    user = await Customer.findOne({ where: { id: payload.userId } });
   } else if (payload.userType == RegisterEnum.CAFE) {
+    user = await Cafe.findOne({ where: { id: payload.userId } });
   } else if (payload.userType == RegisterEnum.RESTAURENT) {
+    user = await Restaurant.findOne({ where: { id: payload.userId } });
   }
   // step: user existence
   if (!user) {

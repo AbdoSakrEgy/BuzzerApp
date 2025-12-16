@@ -58,36 +58,6 @@ class AdminService {
             data: { Key },
         });
     };
-    // ============================ getFile ============================
-    getFile = async (req, res, next) => {
-        const path = req.params.path;
-        const Key = path.join("/");
-        const url = await (0, S3_services_1.createPresignedUrlToGetFileS3)({ Key });
-        return (0, response_handler_1.responseHandler)({
-            res,
-            message: "File URL generated successfully",
-            data: { url },
-        });
-    };
-    // ============================ deleteFile ============================
-    deleteFile = async (req, res, next) => {
-        const path = req.params.path;
-        const Key = path.join("/");
-        const result = await (0, S3_services_1.deleteFileS3)({ Key });
-        return (0, response_handler_1.responseHandler)({
-            res,
-            message: "File deleted successfully",
-        });
-    };
-    // ============================ deleteMultiFiles ============================
-    deleteMultiFiles = async (req, res, next) => {
-        const { Keys, Quiet = false } = req.body;
-        const result = await (0, S3_services_1.deleteMultiFilesS3)({ Keys, Quiet });
-        return (0, response_handler_1.responseHandler)({
-            res,
-            message: "Files deleted successfully",
-        });
-    };
     // ============================ updateBasicInfo ============================
     updateBasicInfo = async (req, res, next) => {
         const user = res.locals.user;

@@ -13,5 +13,8 @@ router.post("/register-check-otp", (0, validation_middleware_1.validation)(auth_
 router.post("/login-check-otp", (0, validation_middleware_1.validation)(auth_validation_1.loginCheckOtpSchema), adminService.loginCheckOtp);
 router.post("/refresh-token", adminService.refreshToken);
 router.get("/profile", auth_middleware_1.auth, adminService.profile);
+router.get("/get-file/*path", adminService.getFile);
+router.delete("/delete-file/*path", adminService.deleteFile);
+router.delete("/delete-multi-files", (0, validation_middleware_1.validation)(auth_validation_1.deleteMultiFilesSchema), adminService.deleteMultiFiles);
 router.post("/logout", auth_middleware_1.auth, adminService.logout);
 exports.default = router;

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateBasicInfoSchema = exports.deleteMultiFilesSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = void 0;
+exports.updateBasicInfoSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 const global_types_1 = require("../../types/global.types");
 exports.deleteAccountSchema = zod_1.default.object({
@@ -12,10 +12,6 @@ exports.deleteAccountSchema = zod_1.default.object({
 });
 exports.uploadProfileImageSchema = zod_1.default.object({
     profileImage: zod_1.default.object(),
-});
-exports.deleteMultiFilesSchema = zod_1.default.object({
-    Keys: zod_1.default.array(zod_1.default.string()),
-    Quiet: zod_1.default.boolean().optional(),
 });
 exports.updateBasicInfoSchema = zod_1.default.object({
     fullName: zod_1.default.string().min(3).max(50).optional(),

@@ -5,6 +5,7 @@ import {
   registerSchema,
   registerCheckOtpSchema,
   loginCheckOtpSchema,
+  deleteMultiFilesSchema,
 } from "./auth.validation";
 import { AdminService } from "./auth.service";
 import { auth } from "../../core/middlewares/auth.middleware";
@@ -18,6 +19,9 @@ router.post("/register-check-otp",validation(registerCheckOtpSchema), adminServi
 router.post("/login-check-otp",validation(loginCheckOtpSchema), adminService.loginCheckOtp);
 router.post("/refresh-token",adminService.refreshToken);
 router.get("/profile",auth, adminService.profile);
+router.get("/get-file/*path", adminService.getFile);
+router.delete("/delete-file/*path", adminService.deleteFile);
+router.delete("/delete-multi-files",validation(deleteMultiFilesSchema),adminService.deleteMultiFiles);
 router.post("/logout",auth,adminService.logout);
 
 export default router;

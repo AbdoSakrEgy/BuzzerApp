@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RoleEnum = exports.GenderEnum = exports.PaymentStatusEnum = exports.PricingPlanEnum = void 0;
+exports.GenderEnum = exports.PaymentStatusEnum = exports.PricingPlanEnum = void 0;
 var PricingPlanEnum;
 (function (PricingPlanEnum) {
     PricingPlanEnum["FREE"] = "free";
@@ -18,8 +18,3 @@ var GenderEnum;
     GenderEnum["MALE"] = "male";
     GenderEnum["FEMALE"] = "female";
 })(GenderEnum || (exports.GenderEnum = GenderEnum = {}));
-var RoleEnum;
-(function (RoleEnum) {
-    RoleEnum["ADMIN"] = "admin";
-    RoleEnum["USER"] = "user";
-})(RoleEnum || (exports.RoleEnum = RoleEnum = {}));
