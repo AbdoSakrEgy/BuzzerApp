@@ -6,8 +6,9 @@ const app_error_1 = require("../../core/errors/app.error");
 const http_status_code_1 = require("../../core/http/http.status.code");
 const response_handler_1 = require("../../core/handlers/response.handler");
 const admin_validation_1 = require("./admin.validation");
-const auth_module_type_1 = require("../../types/auth.module.type");
 const admin_model_1 = require("../../DB/models/admin.model");
+const global_types_1 = require("../../types/global.types");
+const category_model_1 = require("../../DB/models/category.model");
 class AdminService {
     constructor() { }
     // ============================ deleteAccount ============================
@@ -15,14 +16,14 @@ class AdminService {
         const user = res.locals.user;
         const { accountId, accountType } = req.body;
         // step: check account existence
-        if (accountType == auth_module_type_1.RegisterEnum.ADMIN) {
+        if (accountType == global_types_1.RegisterEnum.ADMIN) {
             await admin_model_1.Admin.destroy({ where: { id: accountId } });
         }
-        else if (accountType == auth_module_type_1.RegisterEnum.CUSTOMER) {
+        else if (accountType == global_types_1.RegisterEnum.CUSTOMER) {
         }
-        else if (accountType == auth_module_type_1.RegisterEnum.CAFE) {
+        else if (accountType == global_types_1.RegisterEnum.CAFE) {
         }
-        else if (accountType == auth_module_type_1.RegisterEnum.RESTAURENT) {
+        else if (accountType == global_types_1.RegisterEnum.RESTAURENT) {
         }
         return (0, response_handler_1.responseHandler)({
             res,
@@ -82,6 +83,57 @@ class AdminService {
             res,
             message: "Admin updated successfully",
             data: { admin: updatedAdmin },
+        });
+    };
+    // ============================ addCategory ============================
+    addCategory = async (req, res, next) => {
+        const user = res.locals.user;
+        const { name, description } = req.body;
+        // step: add category
+        const category = await category_model_1.Category.create({ name, description });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            status: http_status_code_1.HttpStatusCode.CREATED,
+            message: "Category created successfully",
+            data: { category },
+        });
+    };
+    // ============================ getCategory ============================
+    getCategory = async (req, res, next) => {
+        const user = res.locals.user;
+        const { name } = req.body;
+        // step: add category
+        const category = await category_model_1.Category.findOne({ where: { name } });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            status: http_status_code_1.HttpStatusCode.OK,
+            data: { category },
+        });
+    };
+    // ============================ updateCategory ============================
+    updateCategory = async (req, res, next) => {
+        const user = res.locals.user;
+        const { id, name, description } = req.body;
+        // step: add category
+        const category = await category_model_1.Category.update({ name, description }, { where: { id } });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            status: http_status_code_1.HttpStatusCode.CREATED,
+            message: "Category updated successfully",
+            data: { category },
+        });
+    };
+    // ============================ deleteCategory ============================
+    deleteCategory = async (req, res, next) => {
+        const user = res.locals.user;
+        const { id } = req.body;
+        // step: add category
+        const category = await category_model_1.Category.destroy({ where: { id } });
+        return (0, response_handler_1.responseHandler)({
+            res,
+            status: http_status_code_1.HttpStatusCode.CREATED,
+            message: "Category deleted successfully",
+            data: { category },
         });
     };
 }

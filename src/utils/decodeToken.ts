@@ -1,11 +1,11 @@
 import { MyJwtPayload, verifyJwt } from "./jwt.js";
 import { AppError } from "../core/errors/app.error.js";
 import { HttpStatusCode } from "../core/http/http.status.code.js";
-import { RegisterEnum } from "../types/auth.module.type.js";
 import { Admin } from "../DB/models/admin.model.js";
 import { Customer } from "../DB/models/customer.model.js";
 import { Cafe } from "../DB/models/cafe.model.js";
 import { Restaurant } from "../DB/models/restaurant.model.js";
+import { RegisterEnum } from "../types/global.types.js";
 
 export enum TokenTypesEnum {
   access = "access",

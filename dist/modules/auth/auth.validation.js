@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logoutSchema = exports.updateBasicInfoSchema = exports.deleteMultiFilesSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = exports.loginCheckOtpSchema = exports.registerCheckOtpSchema = exports.loginSchema = exports.registerSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
-const auth_module_type_1 = require("../../types/auth.module.type");
 const global_types_1 = require("../../types/global.types");
 exports.registerSchema = zod_1.default.object({
     phone: zod_1.default.string(),
@@ -16,10 +15,10 @@ exports.loginSchema = zod_1.default.object({
 exports.registerCheckOtpSchema = zod_1.default
     .object({
     type: zod_1.default.literal([
-        auth_module_type_1.RegisterEnum.ADMIN,
-        auth_module_type_1.RegisterEnum.CUSTOMER,
-        auth_module_type_1.RegisterEnum.CAFE,
-        auth_module_type_1.RegisterEnum.RESTAURENT,
+        global_types_1.RegisterEnum.ADMIN,
+        global_types_1.RegisterEnum.CUSTOMER,
+        global_types_1.RegisterEnum.CAFE,
+        global_types_1.RegisterEnum.RESTAURENT,
     ]),
     fullName: zod_1.default.string().min(3).max(50),
     email: zod_1.default.email().optional(),
@@ -51,10 +50,10 @@ exports.registerCheckOtpSchema = zod_1.default
 });
 exports.loginCheckOtpSchema = zod_1.default.object({
     type: zod_1.default.literal([
-        auth_module_type_1.RegisterEnum.ADMIN,
-        auth_module_type_1.RegisterEnum.CUSTOMER,
-        auth_module_type_1.RegisterEnum.CAFE,
-        auth_module_type_1.RegisterEnum.RESTAURENT,
+        global_types_1.RegisterEnum.ADMIN,
+        global_types_1.RegisterEnum.CUSTOMER,
+        global_types_1.RegisterEnum.CAFE,
+        global_types_1.RegisterEnum.RESTAURENT,
     ]),
     phone: zod_1.default.string(),
     otp: zod_1.default.string(),
@@ -78,9 +77,9 @@ exports.updateBasicInfoSchema = zod_1.default.object({
 });
 exports.logoutSchema = zod_1.default.object({
     type: zod_1.default.literal([
-        auth_module_type_1.RegisterEnum.ADMIN,
-        auth_module_type_1.RegisterEnum.CUSTOMER,
-        auth_module_type_1.RegisterEnum.CAFE,
-        auth_module_type_1.RegisterEnum.RESTAURENT,
+        global_types_1.RegisterEnum.ADMIN,
+        global_types_1.RegisterEnum.CUSTOMER,
+        global_types_1.RegisterEnum.CAFE,
+        global_types_1.RegisterEnum.RESTAURENT,
     ]),
 });

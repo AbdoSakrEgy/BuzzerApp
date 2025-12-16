@@ -1,15 +1,12 @@
 import { Restaurant } from "./../../DB/models/restaurant.model";
 import { NextFunction, Request, Response } from "express";
-import {
-  uploadSingleSmallFileS3,
-} from "../../utils/S3-AWS/S3.services";
+import { uploadSingleSmallFileS3 } from "../../utils/S3-AWS/S3.services";
 import { AppError } from "../../core/errors/app.error";
 import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
 import { uploadProfileImageSchema } from "./restaurant.validation";
 import { updateBasicInfoDTO } from "./restaurant.dto";
-import { RegisterEnum } from "../../types/auth.module.type";
-import { IRestaurantService } from "../../types/restaurant.module.type";
+import { IRestaurantService } from "../../types/modules.interfaces";
 
 export class RestaurantService implements IRestaurantService {
   constructor() {}

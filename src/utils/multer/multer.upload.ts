@@ -3,7 +3,7 @@ import { Request } from "express";
 import fs from "fs";
 import { AppError } from "../../core/errors/app.error";
 import { HttpStatusCode } from "../../core/http/http.status.code";
-import { FileType, StoreInEnum } from "../../types/multer.type";
+import { FileType, StoreInEnum } from "../../types/multer.types";
 
 export const multerUpload = ({
   sendedFileDest = "general",

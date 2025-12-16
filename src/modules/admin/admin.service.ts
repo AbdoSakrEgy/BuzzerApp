@@ -9,13 +9,18 @@ import { AppError } from "../../core/errors/app.error";
 import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
 import { uploadProfileImageSchema } from "./admin.validation";
-import { IAdminService } from "../../types/admin.module.type";
 import {
+  addCategoryDTO,
   deleteAccountDTO,
+  deleteCategoryDTO,
+  getCategoryDTO,
   updateBasicInfoDTO,
+  updateCategoryDTO,
 } from "./admin.dto";
-import { RegisterEnum } from "../../types/auth.module.type";
 import { Admin } from "../../DB/models/admin.model";
+import { IAdminService } from "../../types/modules.interfaces";
+import { RegisterEnum } from "../../types/global.types";
+import { Category } from "../../DB/models/category.model";
 
 export class AdminService implements IAdminService {
   constructor() {}
@@ -106,6 +111,80 @@ export class AdminService implements IAdminService {
       res,
       message: "Admin updated successfully",
       data: { admin: updatedAdmin },
+    });
+  };
+
+  // ============================ addCategory ============================
+  addCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    const { name, description }: addCategoryDTO = req.body;
+    // step: add category
+    const category = await Category.create({ name, description });
+    return responseHandler({
+      res,
+      status: HttpStatusCode.CREATED,
+      message: "Category created successfully",
+      data: { category },
+    });
+  };
+
+  // ============================ getCategory ============================
+  getCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    const { name }: getCategoryDTO = req.body;
+    // step: add category
+    const category = await Category.findOne({ where: { name } });
+    return responseHandler({
+      res,
+      status: HttpStatusCode.OK,
+      data: { category },
+    });
+  };
+
+  // ============================ updateCategory ============================
+  updateCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    const { id, name, description }: updateCategoryDTO = req.body;
+    // step: add category
+    const category = await Category.update(
+      { name, description },
+      { where: { id } }
+    );
+    return responseHandler({
+      res,
+      status: HttpStatusCode.CREATED,
+      message: "Category updated successfully",
+      data: { category },
+    });
+  };
+
+  // ============================ deleteCategory ============================
+  deleteCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const user = res.locals.user;
+    const { id }: deleteCategoryDTO = req.body;
+    // step: add category
+    const category = await Category.destroy({ where: { id } });
+    return responseHandler({
+      res,
+      status: HttpStatusCode.CREATED,
+      message: "Category deleted successfully",
+      data: { category },
     });
   };
 }

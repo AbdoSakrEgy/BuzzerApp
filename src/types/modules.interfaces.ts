@@ -1,12 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 
-export const RegisterEnum = {
-  ADMIN: "admin",
-  CUSTOMER: "customer",
-  CAFE: "cafe",
-  RESTAURENT: "restaurent",
-};
-
 export interface IAuthServcie {
   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
   login(req: Request, res: Response, next: NextFunction): Promise<Response>;
@@ -46,4 +39,24 @@ export interface IAuthServcie {
     next: NextFunction
   ): Promise<Response>;
   logout(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
+
+export interface IAdminService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
+
+export interface ICafeService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
+
+export interface ICustomerService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
+
+export interface IProductService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
+
+export interface IRestaurantService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
 }

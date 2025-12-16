@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateBasicInfoSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = void 0;
+exports.deleteCategorySchema = exports.updateCategorySchema = exports.getCategorySchema = exports.addCategorySchema = exports.updateBasicInfoSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 const global_types_1 = require("../../types/global.types");
 exports.deleteAccountSchema = zod_1.default.object({
@@ -18,4 +18,19 @@ exports.updateBasicInfoSchema = zod_1.default.object({
     age: zod_1.default.number().min(18).max(200).optional(),
     gender: zod_1.default.literal([global_types_1.GenderEnum.MALE, global_types_1.GenderEnum.FEMALE]).optional(),
     email: zod_1.default.email().optional(),
+});
+exports.addCategorySchema = zod_1.default.object({
+    name: zod_1.default.string().min(3).max(20),
+    description: zod_1.default.string().min(3).max(300),
+});
+exports.getCategorySchema = zod_1.default.object({
+    name: zod_1.default.string().min(3).max(20),
+});
+exports.updateCategorySchema = zod_1.default.object({
+    id: zod_1.default.string(),
+    name: zod_1.default.string().min(3).max(20).optional(),
+    description: zod_1.default.string().min(3).max(300).optional(),
+});
+exports.deleteCategorySchema = zod_1.default.object({
+    id: zod_1.default.string(),
 });

@@ -6,13 +6,13 @@ const http_status_code_1 = require("../../core/http/http.status.code");
 const response_handler_1 = require("../../core/handlers/response.handler");
 const jwt_1 = require("../../utils/jwt");
 const createOtp_1 = require("../../utils/createOtp");
-const auth_module_type_1 = require("../../types/auth.module.type");
 const admin_model_1 = require("../../DB/models/admin.model");
 const decodeToken_1 = require("../../utils/decodeToken");
 const S3_services_1 = require("../../utils/S3-AWS/S3.services");
 const customer_model_1 = require("../../DB/models/customer.model");
 const cafe_model_1 = require("../../DB/models/cafe.model");
 const restaurant_model_1 = require("../../DB/models/restaurant.model");
+const global_types_1 = require("../../types/global.types");
 class AdminService {
     constructor() { }
     // ============================ register ============================
@@ -53,16 +53,16 @@ class AdminService {
     registerCheckOtp = async (req, res, next) => {
         const { type, fullName, email, phone, password, otp } = req.body;
         let UserModel;
-        if (type == auth_module_type_1.RegisterEnum.ADMIN) {
+        if (type == global_types_1.RegisterEnum.ADMIN) {
             UserModel = admin_model_1.Admin;
         }
-        else if (type == auth_module_type_1.RegisterEnum.CUSTOMER) {
+        else if (type == global_types_1.RegisterEnum.CUSTOMER) {
             UserModel = customer_model_1.Customer;
         }
-        else if (type == auth_module_type_1.RegisterEnum.CAFE) {
+        else if (type == global_types_1.RegisterEnum.CAFE) {
             UserModel = cafe_model_1.Cafe;
         }
-        else if (type == auth_module_type_1.RegisterEnum.RESTAURENT) {
+        else if (type == global_types_1.RegisterEnum.RESTAURENT) {
             UserModel = restaurant_model_1.Restaurant;
         }
         // step: check otp from firebase
@@ -110,16 +110,16 @@ class AdminService {
     loginCheckOtp = async (req, res, next) => {
         const { type, phone, otp } = req.body;
         let UserModel;
-        if (type == auth_module_type_1.RegisterEnum.ADMIN) {
+        if (type == global_types_1.RegisterEnum.ADMIN) {
             UserModel = admin_model_1.Admin;
         }
-        else if (type == auth_module_type_1.RegisterEnum.CUSTOMER) {
+        else if (type == global_types_1.RegisterEnum.CUSTOMER) {
             UserModel = customer_model_1.Customer;
         }
-        else if (type == auth_module_type_1.RegisterEnum.CAFE) {
+        else if (type == global_types_1.RegisterEnum.CAFE) {
             UserModel = cafe_model_1.Cafe;
         }
-        else if (type == auth_module_type_1.RegisterEnum.RESTAURENT) {
+        else if (type == global_types_1.RegisterEnum.RESTAURENT) {
             UserModel = restaurant_model_1.Restaurant;
         }
         // step: check otp from firebase
@@ -215,16 +215,16 @@ class AdminService {
     logout = async (req, res, next) => {
         const { type } = req.body;
         let UserModel;
-        if (type == auth_module_type_1.RegisterEnum.ADMIN) {
+        if (type == global_types_1.RegisterEnum.ADMIN) {
             UserModel = admin_model_1.Admin;
         }
-        else if (type == auth_module_type_1.RegisterEnum.CUSTOMER) {
+        else if (type == global_types_1.RegisterEnum.CUSTOMER) {
             UserModel = customer_model_1.Customer;
         }
-        else if (type == auth_module_type_1.RegisterEnum.CAFE) {
+        else if (type == global_types_1.RegisterEnum.CAFE) {
             UserModel = cafe_model_1.Cafe;
         }
-        else if (type == auth_module_type_1.RegisterEnum.RESTAURENT) {
+        else if (type == global_types_1.RegisterEnum.RESTAURENT) {
             UserModel = restaurant_model_1.Restaurant;
         }
         const user = res.locals.user;

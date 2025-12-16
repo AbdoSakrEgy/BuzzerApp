@@ -7,9 +7,9 @@ exports.multerUpload = void 0;
 const multer_1 = __importDefault(require("multer"));
 const app_error_1 = require("../../core/errors/app.error");
 const http_status_code_1 = require("../../core/http/http.status.code");
-const multer_type_1 = require("../../types/multer.type");
-const multerUpload = ({ sendedFileDest = "general", sendedFileType = multer_type_1.FileType.image, storeIn = multer_type_1.StoreInEnum.DISK, }) => {
-    const storage = storeIn == multer_type_1.StoreInEnum.MEMORY
+const multer_types_1 = require("../../types/multer.types");
+const multerUpload = ({ sendedFileDest = "general", sendedFileType = multer_types_1.FileType.image, storeIn = multer_types_1.StoreInEnum.DISK, }) => {
+    const storage = storeIn == multer_types_1.StoreInEnum.MEMORY
         ? multer_1.default.memoryStorage()
         : multer_1.default.diskStorage({
         // destination: (req: any, file, cb) => {
@@ -24,7 +24,7 @@ const multerUpload = ({ sendedFileDest = "general", sendedFileType = multer_type
         // },
         });
     const fileFilter = (req, file, cb) => {
-        if (file.size > 200 * 1024 * 1024 && storeIn == multer_type_1.StoreInEnum.MEMORY) {
+        if (file.size > 200 * 1024 * 1024 && storeIn == multer_types_1.StoreInEnum.MEMORY) {
             return cb(new app_error_1.AppError(http_status_code_1.HttpStatusCode.BAD_REQUEST, "Use disk not memory"), false);
         }
         else if (!sendedFileType.includes(file.mimetype)) {

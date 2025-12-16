@@ -7,8 +7,8 @@ import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
 import { uploadProfileImageSchema } from "./customer.validation";
 import { updateBasicInfoDTO } from "./customer.dto";
-import { ICustomerService } from "../../types/customer.module.type";
 import { Customer } from "../../DB/models/customer.model";
+import { ICustomerService } from "../../types/modules.interfaces";
 
 export class CustomerService implements ICustomerService {
   constructor() {}

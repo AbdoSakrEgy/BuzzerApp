@@ -6,15 +6,15 @@ const fs_1 = require("fs");
 const S3_config_1 = require("./S3.config");
 const lib_storage_1 = require("@aws-sdk/lib-storage");
 const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
-const multer_type_1 = require("../../types/multer.type");
+const multer_types_1 = require("../../types/multer.types");
 const app_error_1 = require("../../core/errors/app.error");
 const crypto_1 = require("crypto");
 const http_status_code_1 = require("./../../core/http/http.status.code");
 // ============================ uploadSingleSmallFileS3 ============================
-const uploadSingleSmallFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL = "private", dest = "general", fileFromMulter, storeIn = multer_type_1.StoreInEnum.MEMORY, }) => {
+const uploadSingleSmallFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL = "private", dest = "general", fileFromMulter, storeIn = multer_types_1.StoreInEnum.MEMORY, }) => {
     const Key = `BuzzerApp/${dest}/${fileFromMulter.originalname}__${(0, crypto_1.randomUUID)()}`;
     // Use PutObjectCommand for buffers (known length), Upload for streams (unknown length)
-    if (storeIn === multer_type_1.StoreInEnum.MEMORY) {
+    if (storeIn === multer_types_1.StoreInEnum.MEMORY) {
         const command = new client_s3_1.PutObjectCommand({
             Bucket,
             ACL,
@@ -42,7 +42,7 @@ const uploadSingleSmallFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL =
 };
 exports.uploadSingleSmallFileS3 = uploadSingleSmallFileS3;
 // ============================ uploadSingleLargeFileS3 ============================
-const uploadSingleLargeFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL = "private", dest = "general", fileFromMulter, storeIn = multer_type_1.StoreInEnum.MEMORY, }) => {
+const uploadSingleLargeFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL = "private", dest = "general", fileFromMulter, storeIn = multer_types_1.StoreInEnum.MEMORY, }) => {
     const upload = new lib_storage_1.Upload({
         client: (0, S3_config_1.S3Config)(),
         // partSize: 10 * 1024 * 1024,
@@ -50,7 +50,7 @@ const uploadSingleLargeFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL =
             Bucket,
             ACL,
             Key: `BuzzerApp/${dest}/${fileFromMulter.originalname}__${(0, crypto_1.randomUUID)()}`,
-            Body: storeIn == multer_type_1.StoreInEnum.MEMORY
+            Body: storeIn == multer_types_1.StoreInEnum.MEMORY
                 ? fileFromMulter.buffer
                 : (0, fs_1.createReadStream)(fileFromMulter.path),
             ContentType: fileFromMulter.mimetype,
@@ -67,10 +67,10 @@ const uploadSingleLargeFileS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL =
 };
 exports.uploadSingleLargeFileS3 = uploadSingleLargeFileS3;
 // ============================ uploadMultiFilesS3 ============================
-const uploadMultiFilesS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL = "private", dest = "general", filesFromMulter, storeIn = multer_type_1.StoreInEnum.MEMORY, }) => {
+const uploadMultiFilesS3 = async ({ Bucket = process.env.BUCKET_NAME, ACL = "private", dest = "general", filesFromMulter, storeIn = multer_types_1.StoreInEnum.MEMORY, }) => {
     // fast upload
     const keys = Promise.all(filesFromMulter.map((fileFromMulter) => {
-        if (storeIn == multer_type_1.StoreInEnum.MEMORY) {
+        if (storeIn == multer_types_1.StoreInEnum.MEMORY) {
             return (0, exports.uploadSingleSmallFileS3)({
                 Bucket,
                 ACL,

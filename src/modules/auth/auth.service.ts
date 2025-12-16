@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { AppError } from "../../core/errors/app.error";
 import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
-import { IAdminService } from "../../types/admin.module.type";
 import {
   deleteMultiFilesDTO,
   logincheckOtpDTO,
@@ -13,7 +12,6 @@ import {
 } from "./auth.dto";
 import { createJwt } from "../../utils/jwt";
 import { createOtp } from "../../utils/createOtp";
-import { RegisterEnum } from "../../types/auth.module.type";
 import { Admin } from "../../DB/models/admin.model";
 import { decodeToken, TokenTypesEnum } from "../../utils/decodeToken";
 import {
@@ -24,6 +22,8 @@ import {
 import { Customer } from "../../DB/models/customer.model";
 import { Cafe } from "../../DB/models/cafe.model";
 import { Restaurant } from "../../DB/models/restaurant.model";
+import { IAdminService } from "../../types/modules.interfaces";
+import { RegisterEnum } from "../../types/global.types";
 
 export class AdminService implements IAdminService {
   constructor() {}

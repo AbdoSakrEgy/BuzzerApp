@@ -1,6 +1,5 @@
 import z from "zod";
-import { RegisterEnum } from "../../types/auth.module.type";
-import { GenderEnum } from "../../types/global.types";
+import { GenderEnum, RegisterEnum } from "../../types/global.types";
 
 export const registerSchema = z.object({
   phone: z.string(),

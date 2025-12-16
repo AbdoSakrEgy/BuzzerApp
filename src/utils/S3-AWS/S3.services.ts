@@ -12,7 +12,7 @@ import { createReadStream } from "fs";
 import { S3Config } from "./S3.config";
 import { Upload } from "@aws-sdk/lib-storage";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { StoreInEnum } from "../../types/multer.type";
+import { StoreInEnum } from "../../types/multer.types";
 import { AppError } from "../../core/errors/app.error";
 import { randomUUID } from "crypto";
 import { HttpStatusCode } from "./../../core/http/http.status.code";

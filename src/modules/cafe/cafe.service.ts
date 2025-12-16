@@ -7,8 +7,8 @@ import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
 import { uploadProfileImageSchema } from "./cafe.validation";
 import { updateBasicInfoDTO } from "./cafe.dto";
-import { ICafeService } from "../../types/cafe.module.type";
 import { Cafe } from "../../DB/models/cafe.model";
+import { ICafeService } from "../../types/modules.interfaces";
 
 export class CafeService implements ICafeService {
   constructor() {}

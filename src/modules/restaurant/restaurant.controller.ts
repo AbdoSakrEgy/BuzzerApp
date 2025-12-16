@@ -2,7 +2,7 @@ import { Router } from "express";
 import { multerUpload } from "../../utils/multer/multer.upload";
 import { auth } from "../../core/middlewares/auth.middleware";
 import { validation } from "../../core/middlewares/validation.middleware";
-import { StoreInEnum } from "../../types/multer.type";
+import { StoreInEnum } from "../../types/multer.types";
 import {
   updateBasicInfoSchema,
 } from "./restaurant.validation";
