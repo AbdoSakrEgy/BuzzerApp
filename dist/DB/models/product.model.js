@@ -49,6 +49,12 @@ exports.Product = db_connection_1.sequelize.define("products", {
         defaultValue: 0,
         validate: { min: 0 },
     },
+    images: {
+        type: sequelize_1.DataTypes.JSON,
+        allowNull: true,
+        defaultValue: [],
+        // Array of { public_id: string, secure_url: string }
+    },
 }, {
     freezeTableName: true,
     timestamps: false,

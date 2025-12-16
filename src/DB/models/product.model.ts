@@ -49,6 +49,12 @@ export const Product = sequelize.define(
       defaultValue: 0,
       validate: { min: 0 },
     },
+    images: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: [],
+      // Array of { public_id: string, secure_url: string }
+    },
   },
   {
     freezeTableName: true,
