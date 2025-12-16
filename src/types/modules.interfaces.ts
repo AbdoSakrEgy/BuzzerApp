@@ -60,3 +60,7 @@ export interface IProductService {
 export interface IRestaurantService {
   //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
 }
+
+export interface IAddressService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}

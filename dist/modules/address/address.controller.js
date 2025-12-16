@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_middleware_1 = require("../../core/middlewares/auth.middleware");
+const validation_middleware_1 = require("../../core/middlewares/validation.middleware");
+const address_service_1 = require("./address.service");
+const address_validation_1 = require("./address.validation");
+const router = (0, express_1.Router)();
+const addressService = new address_service_1.AddressService();
+router.post("/add-address", auth_middleware_1.auth, (0, validation_middleware_1.validation)(address_validation_1.addAddressSchema), addressService.addAddress);
+router.get("/get-address/:id", auth_middleware_1.auth, (0, validation_middleware_1.validation)(address_validation_1.getAddressSchema), addressService.getAddress);
+router.get("/get-all-addresses", auth_middleware_1.auth, (0, validation_middleware_1.validation)(address_validation_1.getAllAddressesSchema), addressService.getAllAddresses);
+router.patch("/update-address", auth_middleware_1.auth, (0, validation_middleware_1.validation)(address_validation_1.updateAddressSchema), addressService.updateAddress);
+router.delete("/delete-address/:id", auth_middleware_1.auth, (0, validation_middleware_1.validation)(address_validation_1.deleteAddressSchema), addressService.deleteAddress);
+router.patch("/set-default-address/:id", auth_middleware_1.auth, (0, validation_middleware_1.validation)(address_validation_1.getAddressSchema), addressService.setDefaultAddress);
+exports.default = router;
