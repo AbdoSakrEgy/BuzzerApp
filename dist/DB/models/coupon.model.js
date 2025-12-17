@@ -3,7 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Coupon = void 0;
 const db_connection_1 = require("../../DB/db.connection");
 const sequelize_1 = require("sequelize");
-exports.Coupon = db_connection_1.sequelize.define("coupons", {
+// Define the Coupon model class
+class Coupon extends sequelize_1.Model {
+}
+exports.Coupon = Coupon;
+Coupon.init({
     id: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     code: {
         type: sequelize_1.DataTypes.STRING,
@@ -50,6 +54,8 @@ exports.Coupon = db_connection_1.sequelize.define("coupons", {
         defaultValue: true,
     },
 }, {
+    sequelize: db_connection_1.sequelize,
+    tableName: "coupons",
     freezeTableName: true,
     timestamps: false,
     paranoid: false,

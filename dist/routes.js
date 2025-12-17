@@ -12,6 +12,8 @@ const product_controller_1 = __importDefault(require("./modules/product/product.
 const address_controller_1 = __importDefault(require("./modules/address/address.controller"));
 const cart_controller_1 = __importDefault(require("./modules/cart/cart.controller"));
 const order_controller_1 = __importDefault(require("./modules/order/order.controller"));
+const coupon_controller_1 = __importDefault(require("./modules/coupon/coupon.controller"));
+const payment_controller_1 = __importDefault(require("./modules/payment/payment.controller"));
 router.use("/auth", auth_controller_1.default);
 router.use("/admin", admin_controller_1.default);
 router.use("/customer", customer_controller_1.default);
@@ -19,4 +21,6 @@ router.use("/product", product_controller_1.default);
 router.use("/address", address_controller_1.default);
 router.use("/cart", cart_controller_1.default);
 router.use("/order", order_controller_1.default);
+router.use("/coupon", coupon_controller_1.default);
+router.use("/payment", payment_controller_1.default);
 exports.default = router;

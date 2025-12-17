@@ -1,8 +1,42 @@
 import { sequelize } from "../../DB/db.connection";
-import { DataTypes } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 
-export const Coupon = sequelize.define(
-  "coupons",
+// Define the attributes interface
+export interface CouponAttributes {
+  id: number;
+  code: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  maxDiscount: number | null;
+  minOrderAmount: number | null;
+  expiresAt: Date | null;
+  usageLimit: number | null;
+  usedCount: number;
+  isActive: boolean;
+}
+
+// Define creation attributes (id is optional since it's auto-generated)
+export interface CouponCreationAttributes
+  extends Optional<CouponAttributes, "id" | "usedCount" | "isActive"> {}
+
+// Define the Coupon model class
+export class Coupon
+  extends Model<CouponAttributes, CouponCreationAttributes>
+  implements CouponAttributes
+{
+  declare id: number;
+  declare code: string;
+  declare discountType: "percentage" | "fixed";
+  declare discountValue: number;
+  declare maxDiscount: number | null;
+  declare minOrderAmount: number | null;
+  declare expiresAt: Date | null;
+  declare usageLimit: number | null;
+  declare usedCount: number;
+  declare isActive: boolean;
+}
+
+Coupon.init(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     code: {
@@ -51,6 +85,8 @@ export const Coupon = sequelize.define(
     },
   },
   {
+    sequelize,
+    tableName: "coupons",
     freezeTableName: true,
     timestamps: false,
     paranoid: false,

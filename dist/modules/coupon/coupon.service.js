@@ -21,10 +21,10 @@ class CouponService {
             code,
             discountType,
             discountValue,
-            maxDiscount,
-            minOrderAmount,
+            maxDiscount: maxDiscount ?? null,
+            minOrderAmount: minOrderAmount ?? null,
             expiresAt: expiresAt ? new Date(expiresAt) : null,
-            usageLimit,
+            usageLimit: usageLimit ?? null,
             isActive,
         });
         return (0, response_handler_1.responseHandler)({
@@ -63,17 +63,25 @@ class CouponService {
                 throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.CONFLICT, "Coupon code already exists");
             }
         }
-        // step: update coupon
-        await coupon_model_1.Coupon.update({
-            code,
-            discountType,
-            discountValue,
-            maxDiscount,
-            minOrderAmount,
-            expiresAt: expiresAt ? new Date(expiresAt) : undefined,
-            usageLimit,
-            isActive,
-        }, { where: { id } });
+        // step: update coupon - build update object with only defined properties
+        const updateData = {};
+        if (code !== undefined)
+            updateData.code = code;
+        if (discountType !== undefined)
+            updateData.discountType = discountType;
+        if (discountValue !== undefined)
+            updateData.discountValue = discountValue;
+        if (maxDiscount !== undefined)
+            updateData.maxDiscount = maxDiscount;
+        if (minOrderAmount !== undefined)
+            updateData.minOrderAmount = minOrderAmount;
+        if (expiresAt !== undefined)
+            updateData.expiresAt = expiresAt ? new Date(expiresAt) : null;
+        if (usageLimit !== undefined)
+            updateData.usageLimit = usageLimit;
+        if (isActive !== undefined)
+            updateData.isActive = isActive;
+        await coupon_model_1.Coupon.update(updateData, { where: { id } });
         // step: get updated coupon
         const updatedCoupon = await coupon_model_1.Coupon.findByPk(id);
         return (0, response_handler_1.responseHandler)({

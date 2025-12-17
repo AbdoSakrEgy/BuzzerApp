@@ -3,7 +3,7 @@ import { responseHandler } from "../../core/handlers/response.handler";
 import { ICouponService } from "../../types/modules.interfaces";
 import { AppError } from "../../core/errors/app.error";
 import { HttpStatusCode } from "../../core/http/http.status.code";
-import { Coupon } from "../../DB/models/coupon.model";
+import { Coupon, CouponAttributes } from "../../DB/models/coupon.model";
 import { OrderCoupon } from "../../DB/models/order.coupon.model";
 import { addCouponDTO, updateCouponDTO } from "./coupon.dto";
 
@@ -36,10 +36,10 @@ export class CouponService implements ICouponService {
       code,
       discountType,
       discountValue,
-      maxDiscount,
-      minOrderAmount,
+      maxDiscount: maxDiscount ?? null,
+      minOrderAmount: minOrderAmount ?? null,
       expiresAt: expiresAt ? new Date(expiresAt) : null,
-      usageLimit,
+      usageLimit: usageLimit ?? null,
       isActive,
     });
     return responseHandler({
@@ -101,20 +101,20 @@ export class CouponService implements ICouponService {
         );
       }
     }
-    // step: update coupon
-    await Coupon.update(
-      {
-        code,
-        discountType,
-        discountValue,
-        maxDiscount,
-        minOrderAmount,
-        expiresAt: expiresAt ? new Date(expiresAt) : undefined,
-        usageLimit,
-        isActive,
-      },
-      { where: { id } }
-    );
+    // step: update coupon - build update object with only defined properties
+    const updateData: Partial<CouponAttributes> = {};
+    if (code !== undefined) updateData.code = code;
+    if (discountType !== undefined) updateData.discountType = discountType;
+    if (discountValue !== undefined) updateData.discountValue = discountValue;
+    if (maxDiscount !== undefined) updateData.maxDiscount = maxDiscount;
+    if (minOrderAmount !== undefined)
+      updateData.minOrderAmount = minOrderAmount;
+    if (expiresAt !== undefined)
+      updateData.expiresAt = expiresAt ? new Date(expiresAt) : null;
+    if (usageLimit !== undefined) updateData.usageLimit = usageLimit;
+    if (isActive !== undefined) updateData.isActive = isActive;
+
+    await Coupon.update(updateData, { where: { id } });
     // step: get updated coupon
     const updatedCoupon = await Coupon.findByPk(id);
     return responseHandler({

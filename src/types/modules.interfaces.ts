@@ -75,3 +75,7 @@ export interface IOrderService {
 export interface ICouponService {
   //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
 }
+
+export interface IPaymentService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
