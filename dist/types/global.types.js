@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegisterEnum = exports.GenderEnum = exports.PaymentStatusEnum = exports.PricingPlanEnum = void 0;
+exports.OrderStatusEnum = exports.RegisterEnum = exports.GenderEnum = exports.PaymentStatusEnum = exports.PricingPlanEnum = void 0;
 var PricingPlanEnum;
 (function (PricingPlanEnum) {
     PricingPlanEnum["FREE"] = "free";
@@ -25,3 +25,12 @@ var RegisterEnum;
     RegisterEnum["CAFE"] = "cafe";
     RegisterEnum["RESTAURENT"] = "restaurent";
 })(RegisterEnum || (exports.RegisterEnum = RegisterEnum = {}));
+var OrderStatusEnum;
+(function (OrderStatusEnum) {
+    OrderStatusEnum["PENDING"] = "pending";
+    OrderStatusEnum["PROCESSING"] = "processing";
+    OrderStatusEnum["SHIPPED"] = "shipped";
+    OrderStatusEnum["DELIVERED"] = "delivered";
+    OrderStatusEnum["CANCELLED"] = "cancelled";
+    OrderStatusEnum["REFUNDED"] = "refunded";
+})(OrderStatusEnum || (exports.OrderStatusEnum = OrderStatusEnum = {}));

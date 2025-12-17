@@ -18,6 +18,7 @@ const integerFromString = zod_1.default
 exports.addOrderSchema = zod_1.default.object({
     address_id: integerFromString.optional(),
     notes: zod_1.default.string().max(500).optional(),
+    couponCode: zod_1.default.string().max(50).optional(),
 });
 // getOrderSchema
 exports.getOrderSchema = zod_1.default.object({

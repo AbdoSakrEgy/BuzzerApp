@@ -13,6 +13,7 @@ const integerFromString = z
 export const addOrderSchema = z.object({
   address_id: integerFromString.optional(),
   notes: z.string().max(500).optional(),
+  couponCode: z.string().max(50).optional(),
 });
 
 // getOrderSchema

@@ -71,3 +71,7 @@ export interface ICartService {
 export interface IOrderService {
   //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
 }
+
+export interface ICouponService {
+  //   register(req: Request, res: Response, next: NextFunction): Promise<Response>;
+}
