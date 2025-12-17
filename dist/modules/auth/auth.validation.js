@@ -3,16 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logoutSchema = exports.updateBasicInfoSchema = exports.deleteMultiFilesSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = exports.loginCheckOtpSchema = exports.registerCheckOtpSchema = exports.loginSchema = exports.registerSchema = void 0;
+exports.logoutSchema = exports.updateBasicInfoSchema = exports.deleteMultiFilesSchema = exports.uploadProfileImageSchema = exports.deleteAccountSchema = exports.loginSchema = exports.registerSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 const global_types_1 = require("../../types/global.types");
-exports.registerSchema = zod_1.default.object({
-    phone: zod_1.default.string(),
-});
-exports.loginSchema = zod_1.default.object({
-    phone: zod_1.default.string(),
-});
-exports.registerCheckOtpSchema = zod_1.default
+exports.registerSchema = zod_1.default
     .object({
     type: zod_1.default.literal([
         global_types_1.RegisterEnum.ADMIN,
@@ -24,7 +18,6 @@ exports.registerCheckOtpSchema = zod_1.default
     email: zod_1.default.email().optional(),
     phone: zod_1.default.string(),
     password: zod_1.default.string(),
-    otp: zod_1.default.string(),
 })
     .superRefine((args, ctx) => {
     if (args.phone) {
@@ -48,7 +41,7 @@ exports.registerCheckOtpSchema = zod_1.default
         }
     }
 });
-exports.loginCheckOtpSchema = zod_1.default.object({
+exports.loginSchema = zod_1.default.object({
     type: zod_1.default.literal([
         global_types_1.RegisterEnum.ADMIN,
         global_types_1.RegisterEnum.CUSTOMER,
@@ -56,7 +49,6 @@ exports.loginCheckOtpSchema = zod_1.default.object({
         global_types_1.RegisterEnum.RESTAURENT,
     ]),
     phone: zod_1.default.string(),
-    otp: zod_1.default.string(),
 });
 exports.deleteAccountSchema = zod_1.default.object({
     accountId: zod_1.default.string(),

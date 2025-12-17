@@ -9,8 +9,6 @@ const router = (0, express_1.Router)();
 const adminService = new auth_service_1.AdminService();
 router.post("/register", (0, validation_middleware_1.validation)(auth_validation_1.registerSchema), adminService.register);
 router.post("/login", (0, validation_middleware_1.validation)(auth_validation_1.loginSchema), adminService.login);
-router.post("/register-check-otp", (0, validation_middleware_1.validation)(auth_validation_1.registerCheckOtpSchema), adminService.registerCheckOtp);
-router.post("/login-check-otp", (0, validation_middleware_1.validation)(auth_validation_1.loginCheckOtpSchema), adminService.loginCheckOtp);
 router.post("/refresh-token", adminService.refreshToken);
 router.get("/profile", auth_middleware_1.auth, adminService.profile);
 router.get("/get-file/*path", adminService.getFile);

@@ -17,41 +17,7 @@ class AdminService {
     constructor() { }
     // ============================ register ============================
     register = async (req, res, next) => {
-        const { phone } = req.body;
-        // step: check admin existence
-        const checkAdmin = await admin_model_1.Admin.findOne({ where: { phone } });
-        if (checkAdmin) {
-            throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.BAD_REQUEST, "Admin already exist");
-        }
-        // step: send otp from firebase
-        // ????????????????????
-        return (0, response_handler_1.responseHandler)({
-            res,
-            status: http_status_code_1.HttpStatusCode.OK,
-            message: `Otp sended to ${phone}`,
-            data: {},
-        });
-    };
-    // ============================ login ============================
-    login = async (req, res, next) => {
-        const { phone } = req.body;
-        // step: check admin existence
-        const checkAdmin = await admin_model_1.Admin.findOne({ where: { phone } });
-        if (!checkAdmin) {
-            throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Admin not found");
-        }
-        // step: send otp from firebase
-        // ????????????????????
-        return (0, response_handler_1.responseHandler)({
-            res,
-            status: http_status_code_1.HttpStatusCode.OK,
-            message: `Otp sended to ${phone}`,
-            data: {},
-        });
-    };
-    // ============================ registerCheckOtp ============================
-    registerCheckOtp = async (req, res, next) => {
-        const { type, fullName, email, phone, password, otp } = req.body;
+        const { type, fullName, email, phone, password } = req.body;
         let UserModel;
         if (type == global_types_1.RegisterEnum.ADMIN) {
             UserModel = admin_model_1.Admin;
@@ -64,11 +30,6 @@ class AdminService {
         }
         else if (type == global_types_1.RegisterEnum.RESTAURENT) {
             UserModel = restaurant_model_1.Restaurant;
-        }
-        // step: check otp from firebase
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (false) {
-            throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.UNAUTHORIZED, "Invalid OTP");
         }
         // step: check if email already exists
         const checkUserWithEmail = await UserModel.findOne({ where: { email } });
@@ -106,9 +67,9 @@ class AdminService {
             data: { accessToken, refreshToken },
         });
     };
-    // ============================ loginCheckOtp ============================
-    loginCheckOtp = async (req, res, next) => {
-        const { type, phone, otp } = req.body;
+    // ============================ login ============================
+    login = async (req, res, next) => {
+        const { type, phone } = req.body;
         let UserModel;
         if (type == global_types_1.RegisterEnum.ADMIN) {
             UserModel = admin_model_1.Admin;
@@ -121,11 +82,6 @@ class AdminService {
         }
         else if (type == global_types_1.RegisterEnum.RESTAURENT) {
             UserModel = restaurant_model_1.Restaurant;
-        }
-        // step: check otp from firebase
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (false) {
-            throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.UNAUTHORIZED, "Invalid OTP");
         }
         // step: check user
         const user = await UserModel.findOne({ where: { phone } });

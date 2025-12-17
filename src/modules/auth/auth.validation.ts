@@ -1,15 +1,7 @@
 import z from "zod";
 import { GenderEnum, RegisterEnum } from "../../types/global.types";
 
-export const registerSchema = z.object({
-  phone: z.string(),
-});
-
-export const loginSchema = z.object({
-  phone: z.string(),
-});
-
-export const registerCheckOtpSchema = z
+export const registerSchema = z
   .object({
     type: z.literal([
       RegisterEnum.ADMIN,
@@ -21,7 +13,6 @@ export const registerCheckOtpSchema = z
     email: z.email().optional(),
     phone: z.string(),
     password: z.string(),
-    otp: z.string(),
   })
   .superRefine((args, ctx) => {
     if (args.phone) {
@@ -47,7 +38,7 @@ export const registerCheckOtpSchema = z
     }
   });
 
-export const loginCheckOtpSchema = z.object({
+export const loginSchema = z.object({
   type: z.literal([
     RegisterEnum.ADMIN,
     RegisterEnum.CUSTOMER,
@@ -55,7 +46,6 @@ export const loginCheckOtpSchema = z.object({
     RegisterEnum.RESTAURENT,
   ]),
   phone: z.string(),
-  otp: z.string(),
 });
 
 export const deleteAccountSchema = z.object({

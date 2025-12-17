@@ -4,10 +4,8 @@ import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
 import {
   deleteMultiFilesDTO,
-  logincheckOtpDTO,
   loginDTO,
   logoutDTO,
-  registerCheckOtpDTO,
   registerDTO,
 } from "./auth.dto";
 import { createJwt } from "../../utils/jwt";
@@ -34,52 +32,7 @@ export class AdminService implements IAdminService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const { phone }: registerDTO = req.body;
-    // step: check admin existence
-    const checkAdmin = await Admin.findOne({ where: { phone } });
-    if (checkAdmin) {
-      throw new AppError(HttpStatusCode.BAD_REQUEST, "Admin already exist");
-    }
-    // step: send otp from firebase
-    // ????????????????????
-    return responseHandler({
-      res,
-      status: HttpStatusCode.OK,
-      message: `Otp sended to ${phone}`,
-      data: {},
-    });
-  };
-
-  // ============================ login ============================
-  login = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> => {
-    const { phone }: loginDTO = req.body;
-    // step: check admin existence
-    const checkAdmin = await Admin.findOne({ where: { phone } });
-    if (!checkAdmin) {
-      throw new AppError(HttpStatusCode.NOT_FOUND, "Admin not found");
-    }
-    // step: send otp from firebase
-    // ????????????????????
-    return responseHandler({
-      res,
-      status: HttpStatusCode.OK,
-      message: `Otp sended to ${phone}`,
-      data: {},
-    });
-  };
-
-  // ============================ registerCheckOtp ============================
-  registerCheckOtp = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response> => {
-    const { type, fullName, email, phone, password, otp }: registerCheckOtpDTO =
-      req.body;
+    const { type, fullName, email, phone, password }: registerDTO = req.body;
     let UserModel: any;
     if (type == RegisterEnum.ADMIN) {
       UserModel = Admin;
@@ -89,11 +42,6 @@ export class AdminService implements IAdminService {
       UserModel = Cafe;
     } else if (type == RegisterEnum.RESTAURENT) {
       UserModel = Restaurant;
-    }
-    // step: check otp from firebase
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (false) {
-      throw new AppError(HttpStatusCode.UNAUTHORIZED, "Invalid OTP");
     }
     // step: check if email already exists
     const checkUserWithEmail = await UserModel.findOne({ where: { email } });
@@ -149,13 +97,13 @@ export class AdminService implements IAdminService {
     });
   };
 
-  // ============================ loginCheckOtp ============================
-  loginCheckOtp = async (
+  // ============================ login ============================
+  login = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const { type, phone, otp }: logincheckOtpDTO = req.body;
+    const { type, phone }: loginDTO = req.body;
     let UserModel: any;
     if (type == RegisterEnum.ADMIN) {
       UserModel = Admin;
@@ -165,11 +113,6 @@ export class AdminService implements IAdminService {
       UserModel = Cafe;
     } else if (type == RegisterEnum.RESTAURENT) {
       UserModel = Restaurant;
-    }
-    // step: check otp from firebase
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (false) {
-      throw new AppError(HttpStatusCode.UNAUTHORIZED, "Invalid OTP");
     }
     // step: check user
     const user = await UserModel.findOne({ where: { phone } });
