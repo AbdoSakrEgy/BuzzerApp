@@ -30,9 +30,17 @@ exports.OrderCoupon = db_connection_1.sequelize.define("order_coupons", {
         allowNull: false,
         validate: { min: 0 },
     },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
 }, {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
 });
 // Associations

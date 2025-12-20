@@ -58,8 +58,16 @@ exports.Customer = db_connection_1.sequelize.define("customers", {
         defaultValue: global_types_1.PricingPlanEnum.FREE,
     },
     availableCredits: { type: sequelize_1.DataTypes.INTEGER, defaultValue: 50 },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
 }, {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
 });

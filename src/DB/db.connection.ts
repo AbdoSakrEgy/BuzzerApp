@@ -17,7 +17,7 @@ export const DBConnection = async () => {
 };
 export const DBsync = async () => {
   try {
-    await sequelize.sync({ alter: false, force: false });
+    await sequelize.sync({ alter: true, force: false });
     console.log("DB sync done.");
   } catch (err) {
     console.log("DB sync failed:", err);

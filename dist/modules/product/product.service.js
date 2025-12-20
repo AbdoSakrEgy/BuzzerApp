@@ -67,6 +67,15 @@ class ProductService {
             data: { product },
         });
     };
+    // ============================ allProducts ============================
+    allProducts = async (req, res, next) => {
+        const products = await product_model_1.Product.findAll();
+        return (0, response_handler_1.responseHandler)({
+            res,
+            message: "Product retrieved successfully",
+            data: { products },
+        });
+    };
     // ============================ updateProduct ============================
     updateProduct = async (req, res, next) => {
         const user = res.locals.user;

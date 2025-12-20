@@ -99,6 +99,20 @@ export class ProductService implements IProductService {
     });
   };
 
+  // ============================ allProducts ============================
+  allProducts = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const products = await Product.findAll();
+    return responseHandler({
+      res,
+      message: "Product retrieved successfully",
+      data: { products },
+    });
+  };
+
   // ============================ updateProduct ============================
   updateProduct = async (
     req: Request,

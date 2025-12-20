@@ -30,10 +30,18 @@ export const OrderCoupon = sequelize.define(
       allowNull: false,
       validate: { min: 0 },
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
   }
 );

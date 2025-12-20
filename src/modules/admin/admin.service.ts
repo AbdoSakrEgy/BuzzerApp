@@ -91,7 +91,15 @@ export class AdminService implements IAdminService {
     next: NextFunction
   ): Promise<Response> => {
     const user = res.locals.user;
-    const { fullName, age, gender, email }: updateBasicInfoDTO = req.body;
+    const { fullName, age, gender, email, phone }: updateBasicInfoDTO =
+      req.body;
+    // step: check phone validation
+    if (phone) {
+      const existingAdmin = await Admin.findOne({ where: { phone } });
+      if (existingAdmin && existingAdmin.get("id") !== user.id) {
+        throw new AppError(HttpStatusCode.BAD_REQUEST, "phone already exists");
+      }
+    }
     // step: check email validation
     if (email) {
       const existingAdmin = await Admin.findOne({ where: { email } });
@@ -101,7 +109,7 @@ export class AdminService implements IAdminService {
     }
     // step: update basic info
     const updatedAdmin = await Admin.update(
-      { fullName, age, gender },
+      { fullName, age, gender, phone },
       { where: { id: user.id } }
     );
     if (!updatedAdmin) {

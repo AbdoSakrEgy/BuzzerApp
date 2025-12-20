@@ -12,8 +12,7 @@ import { Product } from "../../DB/models/product.model";
 import { Customer } from "../../DB/models/customer.model";
 import { Coupon } from "../../DB/models/coupon.model";
 import { OrderCoupon } from "../../DB/models/order.coupon.model";
-import { getOrdersSchema } from "./order.validation";
-import { addOrderDTO, updateOrderDTO, getOrdersDTO } from "./order.dto";
+import { addOrderDTO, updateOrderDTO } from "./order.dto";
 import { sequelize } from "../../DB/db.connection";
 
 export class OrderService implements IOrderService {
@@ -278,46 +277,11 @@ export class OrderService implements IOrderService {
     next: NextFunction
   ): Promise<Response> => {
     const user = res.locals.user;
-    // step: validate query params
-    const parsed = getOrdersSchema.safeParse(req.query);
-    if (!parsed.success) {
-      const errors = parsed.error.issues
-        .map((e) => `${e.path.join(".")}: ${e.message}`)
-        .join("; ");
-      throw new AppError(HttpStatusCode.BAD_REQUEST, errors);
-    }
-    const { status, page, limit }: getOrdersDTO = parsed.data;
-    // step: build where clause
-    const whereClause: any = { customer_id: user.id };
-    if (status) {
-      whereClause.status = status;
-    }
-    // step: calculate pagination
-    const offset = (page - 1) * limit;
-    // step: find orders with pagination and coupon info
-    const { count, rows: orders } = await Order.findAndCountAll({
-      where: whereClause,
-      include: [
-        { model: OrderItem, include: [{ model: Product }] },
-        { model: OrderCoupon, include: [{ model: Coupon }] },
-      ],
-      limit,
-      offset,
-      order: [["id", "DESC"]],
-    });
-    const totalPages = Math.ceil(count / limit);
+    const orders = await Order.findAll({ where: { customer_id: user.id } });
     return responseHandler({
       res,
       message: "Orders retrieved successfully",
-      data: {
-        orders,
-        pagination: {
-          currentPage: page,
-          totalPages,
-          totalItems: count,
-          itemsPerPage: limit,
-        },
-      },
+      data: { orders },
     });
   };
 

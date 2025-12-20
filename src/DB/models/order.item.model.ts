@@ -39,10 +39,18 @@ export const OrderItem = sequelize.define(
       allowNull: false,
       validate: { min: 1 },
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
   }
 );

@@ -20,7 +20,7 @@ const DBConnection = async () => {
 exports.DBConnection = DBConnection;
 const DBsync = async () => {
     try {
-        await exports.sequelize.sync({ alter: false, force: false });
+        await exports.sequelize.sync({ alter: true, force: false });
         console.log("DB sync done.");
     }
     catch (err) {

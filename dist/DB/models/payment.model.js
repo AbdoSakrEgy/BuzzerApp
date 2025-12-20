@@ -31,9 +31,17 @@ exports.Payment = db_connection_1.sequelize.define("payments", {
         type: sequelize_1.DataTypes.ENUM(global_types_1.PaymentStatusEnum.PENDING, global_types_1.PaymentStatusEnum.COMPLETED, global_types_1.PaymentStatusEnum.REFUNDED),
         defaultValue: global_types_1.PaymentStatusEnum.PENDING,
     },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
 }, {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
 });
 // Associations

@@ -40,7 +40,14 @@ class CustomerService {
     // ============================ updateBasicInfo ============================
     updateBasicInfo = async (req, res, next) => {
         const user = res.locals.user;
-        const { fullName, age, gender, email } = req.body;
+        const { fullName, age, gender, email, phone } = req.body;
+        // step: check phone validation
+        if (phone) {
+            const checkCustomer = await customer_model_1.Customer.findOne({ where: { phone } });
+            if (checkCustomer && checkCustomer.get("id") !== user.id) {
+                throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.BAD_REQUEST, "Phone already exists");
+            }
+        }
         // step: check email validation
         if (email) {
             const checkCustomer = await customer_model_1.Customer.findOne({ where: { email } });

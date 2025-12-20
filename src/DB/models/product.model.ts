@@ -55,10 +55,18 @@ export const Product = sequelize.define(
       defaultValue: [],
       // Array of { public_id: string, secure_url: string }
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
   }
 );

@@ -10,7 +10,8 @@ const router = Router();
 const productService = new ProductService();
 
 router.post("/add-product",auth,multerUpload({ storeIn: StoreInEnum.MEMORY }).array("productImages", 3),productService.addProduct);
-router.get("/get-product/:id",auth,validation(getProductSchema),productService.getProduct);
+router.get("/get-product/:id",validation(getProductSchema),productService.getProduct);
+router.get("/all-products",productService.allProducts);
 router.patch("/update-product",auth,multerUpload({ storeIn: StoreInEnum.MEMORY }).array("productImages", 3),productService.updateProduct);
 router.delete("/delete-product/:id",auth,validation(deleteProductSchema),productService.deleteProduct);
 

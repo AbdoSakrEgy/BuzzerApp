@@ -63,7 +63,14 @@ class AdminService {
     // ============================ updateBasicInfo ============================
     updateBasicInfo = async (req, res, next) => {
         const user = res.locals.user;
-        const { fullName, age, gender, email } = req.body;
+        const { fullName, age, gender, email, phone } = req.body;
+        // step: check phone validation
+        if (phone) {
+            const existingAdmin = await admin_model_1.Admin.findOne({ where: { phone } });
+            if (existingAdmin && existingAdmin.get("id") !== user.id) {
+                throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.BAD_REQUEST, "phone already exists");
+            }
+        }
         // step: check email validation
         if (email) {
             const existingAdmin = await admin_model_1.Admin.findOne({ where: { email } });
@@ -72,7 +79,7 @@ class AdminService {
             }
         }
         // step: update basic info
-        const updatedAdmin = await admin_model_1.Admin.update({ fullName, age, gender }, { where: { id: user.id } });
+        const updatedAdmin = await admin_model_1.Admin.update({ fullName, age, gender, phone }, { where: { id: user.id } });
         if (!updatedAdmin) {
             return (0, response_handler_1.responseHandler)({
                 res,

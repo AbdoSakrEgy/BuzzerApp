@@ -57,7 +57,15 @@ export class RestaurantService implements IRestaurantService {
     next: NextFunction
   ): Promise<Response> => {
     const user = res.locals.user;
-    const { fullName, age, gender, email }: updateBasicInfoDTO = req.body;
+    const { fullName, age, gender, email, phone }: updateBasicInfoDTO =
+      req.body;
+    // step: check phone validation
+    if (phone) {
+      const checkRestaurant = await Restaurant.findOne({ where: { phone } });
+      if (checkRestaurant && checkRestaurant.get("id") !== user.id) {
+        throw new AppError(HttpStatusCode.BAD_REQUEST, "Phone already exists");
+      }
+    }
     // step: check email validation
     if (email) {
       const checkRestaurant = await Restaurant.findOne({ where: { email } });

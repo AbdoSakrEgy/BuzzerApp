@@ -9,9 +9,33 @@ const global_types_1 = require("../../types/global.types");
 exports.uploadProfileImageSchema = zod_1.default.object({
     profileImage: zod_1.default.object(),
 });
-exports.updateBasicInfoSchema = zod_1.default.object({
+exports.updateBasicInfoSchema = zod_1.default
+    .object({
     fullName: zod_1.default.string().min(3).max(50).optional(),
     age: zod_1.default.number().min(18).max(200).optional(),
     gender: zod_1.default.literal([global_types_1.GenderEnum.MALE, global_types_1.GenderEnum.FEMALE]).optional(),
     email: zod_1.default.email().optional(),
+    phone: zod_1.default.string().optional(),
+})
+    .superRefine((args, ctx) => {
+    if (args.phone) {
+        const clean = args.phone.replace(/[\s-]/g, "");
+        const phoneRegex = /^\+?[1-9]\d{7,14}$/;
+        if (!phoneRegex.test(clean)) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["phone"],
+                message: "Phone number is incorrect",
+            });
+        }
+    }
+    if (args.email) {
+        if (args.email == "zzzzz@gmail.com") {
+            ctx.addIssue({
+                code: "custom",
+                path: ["email"],
+                message: "zzzzz@gmail.com not valid email to use :), test custom validation",
+            });
+        }
+    }
 });

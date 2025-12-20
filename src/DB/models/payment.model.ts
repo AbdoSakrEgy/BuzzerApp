@@ -35,10 +35,18 @@ export const Payment = sequelize.define(
       ),
       defaultValue: PaymentStatusEnum.PENDING,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
   }
 );

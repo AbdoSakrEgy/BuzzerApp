@@ -38,10 +38,18 @@ export const Restaurant = sequelize.define(
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     deletedBy: { type: DataTypes.INTEGER, allowNull: true },
     profileImage_public_id: { type: DataTypes.STRING, allowNull: true },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
   }
 );

@@ -57,7 +57,15 @@ export class CafeService implements ICafeService {
     next: NextFunction
   ): Promise<Response> => {
     const user = res.locals.user;
-    const { fullName, age, gender, email }: updateBasicInfoDTO = req.body;
+    const { fullName, age, gender, email, phone }: updateBasicInfoDTO =
+      req.body;
+    // step: check phone validation
+    if (phone) {
+      const checkCafe = await Cafe.findOne({ where: { phone } });
+      if (checkCafe && checkCafe.get("id") !== user.id) {
+        throw new AppError(HttpStatusCode.BAD_REQUEST, "Phone already exists");
+      }
+    }
     // step: check email validation
     if (email) {
       const checkCafe = await Cafe.findOne({ where: { email } });

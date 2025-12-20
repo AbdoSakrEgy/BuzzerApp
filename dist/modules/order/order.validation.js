@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteOrderSchema = exports.updateOrderSchema = exports.getOrdersSchema = exports.getOrderSchema = exports.addOrderSchema = void 0;
+exports.deleteOrderSchema = exports.updateOrderSchema = exports.getOrderSchema = exports.addOrderSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 // Helper to transform string numbers to integers
 const integerFromString = zod_1.default
@@ -23,12 +23,6 @@ exports.addOrderSchema = zod_1.default.object({
 // getOrderSchema
 exports.getOrderSchema = zod_1.default.object({
     order_id: zod_1.default.string(),
-});
-// getOrdersSchema
-exports.getOrdersSchema = zod_1.default.object({
-    status: zod_1.default.enum(["pending", "paid", "cancelled", "refunded"]).optional(),
-    page: integerFromString.default(1),
-    limit: integerFromString.default(10),
 });
 // updateOrderSchema
 exports.updateOrderSchema = zod_1.default.object({

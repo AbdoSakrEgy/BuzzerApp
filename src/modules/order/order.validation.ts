@@ -21,13 +21,6 @@ export const getOrderSchema = z.object({
   order_id: z.string(),
 });
 
-// getOrdersSchema
-export const getOrdersSchema = z.object({
-  status: z.enum(["pending", "paid", "cancelled", "refunded"]).optional(),
-  page: integerFromString.default(1),
-  limit: integerFromString.default(10),
-});
-
 // updateOrderSchema
 export const updateOrderSchema = z.object({
   order_id: integerFromString,

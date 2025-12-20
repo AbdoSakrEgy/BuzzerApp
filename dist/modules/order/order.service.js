@@ -13,7 +13,6 @@ const product_model_1 = require("../../DB/models/product.model");
 const customer_model_1 = require("../../DB/models/customer.model");
 const coupon_model_1 = require("../../DB/models/coupon.model");
 const order_coupon_model_1 = require("../../DB/models/order.coupon.model");
-const order_validation_1 = require("./order.validation");
 const db_connection_1 = require("../../DB/db.connection");
 class OrderService {
     constructor() { }
@@ -207,46 +206,11 @@ class OrderService {
     // ============================ getOrders ============================
     getOrders = async (req, res, next) => {
         const user = res.locals.user;
-        // step: validate query params
-        const parsed = order_validation_1.getOrdersSchema.safeParse(req.query);
-        if (!parsed.success) {
-            const errors = parsed.error.issues
-                .map((e) => `${e.path.join(".")}: ${e.message}`)
-                .join("; ");
-            throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.BAD_REQUEST, errors);
-        }
-        const { status, page, limit } = parsed.data;
-        // step: build where clause
-        const whereClause = { customer_id: user.id };
-        if (status) {
-            whereClause.status = status;
-        }
-        // step: calculate pagination
-        const offset = (page - 1) * limit;
-        // step: find orders with pagination and coupon info
-        const { count, rows: orders } = await order_model_1.Order.findAndCountAll({
-            where: whereClause,
-            include: [
-                { model: order_item_model_1.OrderItem, include: [{ model: product_model_1.Product }] },
-                { model: order_coupon_model_1.OrderCoupon, include: [{ model: coupon_model_1.Coupon }] },
-            ],
-            limit,
-            offset,
-            order: [["id", "DESC"]],
-        });
-        const totalPages = Math.ceil(count / limit);
+        const orders = await order_model_1.Order.findAll({ where: { customer_id: user.id } });
         return (0, response_handler_1.responseHandler)({
             res,
             message: "Orders retrieved successfully",
-            data: {
-                orders,
-                pagination: {
-                    currentPage: page,
-                    totalPages,
-                    totalItems: count,
-                    itemsPerPage: limit,
-                },
-            },
+            data: { orders },
         });
     };
     // ============================ updateOrder ============================

@@ -39,9 +39,17 @@ exports.OrderItem = db_connection_1.sequelize.define("order_items", {
         allowNull: false,
         validate: { min: 1 },
     },
+    createdAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
+    updatedAt: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
 }, {
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
     paranoid: false,
 });
 // Associations

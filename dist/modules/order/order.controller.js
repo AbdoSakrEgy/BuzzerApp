@@ -8,7 +8,7 @@ const order_validation_1 = require("./order.validation");
 const router = (0, express_1.Router)();
 const orderService = new order_service_1.OrderService();
 router.post("/add-order", auth_middleware_1.auth, (0, validation_middleware_1.validation)(order_validation_1.addOrderSchema), orderService.addOrder);
-router.get("/get-orders", auth_middleware_1.auth, (0, validation_middleware_1.validation)(order_validation_1.getOrderSchema), orderService.getOrders);
+router.get("/get-orders", auth_middleware_1.auth, orderService.getOrders);
 router.get("/get-order/:order_id", auth_middleware_1.auth, (0, validation_middleware_1.validation)(order_validation_1.getOrderSchema), orderService.getOrder);
 router.patch("/update-order", auth_middleware_1.auth, (0, validation_middleware_1.validation)(order_validation_1.updateOrderSchema), orderService.updateOrder);
 router.delete("/delete-order/:order_id", auth_middleware_1.auth, (0, validation_middleware_1.validation)(order_validation_1.deleteOrderSchema), orderService.deleteOrder);
