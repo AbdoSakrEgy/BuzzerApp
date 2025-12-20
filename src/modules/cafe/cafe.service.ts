@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import {
+  createPresignedUrlToGetFileS3,
   uploadSingleSmallFileS3,
 } from "../../utils/S3-AWS/S3.services";
 import { AppError } from "../../core/errors/app.error";
@@ -37,7 +38,11 @@ export class CafeService implements ICafeService {
       fileFromMulter: req.file as Express.Multer.File,
     });
     // step: update user
-    await Cafe.update({ profileImage: Key }, { where: { id: user.id } });
+    const url = await createPresignedUrlToGetFileS3({ Key });
+    await Cafe.update(
+      { profileImage_public_id: Key },
+      { where: { id: user.id } }
+    );
     return responseHandler({
       res,
       message: "Profile image uploaded successfully",
@@ -76,6 +81,19 @@ export class CafeService implements ICafeService {
       res,
       message: "Cafe updated successfully",
       data: { cafe: updatedCafe },
+    });
+  };
+
+  // ============================ allCafes ============================
+  allCafes = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const cafes = await Cafe.findAll();
+    return responseHandler({
+      res,
+      data: { cafes },
     });
   };
 }

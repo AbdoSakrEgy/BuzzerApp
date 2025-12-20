@@ -41,7 +41,8 @@ const bootstrap = async () => {
     await (0, db_connection_1.DBConnection)();
     await (0, db_connection_1.DBsync)();
     app.use(limiter);
-    app.use((0, cors_1.default)(corsOptions));
+    // app.use(cors(corsOptions));
+    app.use((0, cors_1.default)());
     app.use(express_1.default.json());
     app.use("/api/v1", routes_1.default);
     app.use(error_middleware_1.errorMiddleware);

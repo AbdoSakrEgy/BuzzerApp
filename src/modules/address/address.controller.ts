@@ -15,7 +15,7 @@ const addressService = new AddressService();
 
 router.post("/add-address",auth,validation(addAddressSchema),addressService.addAddress);
 router.get("/get-address/:id",auth,validation(getAddressSchema),addressService.getAddress);
-router.get("/get-all-addresses",auth,validation(getAllAddressesSchema),addressService.getAllAddresses);
+router.get("/get-all-addresses",addressService.getAllAddresses);
 router.patch("/update-address",auth,validation(updateAddressSchema),addressService.updateAddress);
 router.delete("/delete-address/:id",auth,validation(deleteAddressSchema),addressService.deleteAddress);
 router.patch("/set-default-address/:id",auth,validation(getAddressSchema),addressService.setDefaultAddress);

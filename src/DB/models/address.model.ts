@@ -1,15 +1,19 @@
 import { sequelize } from "../../DB/db.connection";
 import { DataTypes } from "sequelize";
-import { Customer } from "./customer.model";
+import { RegisterEnum } from "../../types/global.types";
 
 export const Address = sequelize.define(
   "addresses",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    customer_id: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: Customer, key: "id" },
+      // No foreign key - polymorphic relationship (can be admin, customer, cafe, or restaurant)
+    },
+    user_type: {
+      type: DataTypes.ENUM(...Object.values(RegisterEnum)),
+      allowNull: false,
     },
     label: {
       type: DataTypes.STRING,
@@ -31,6 +35,4 @@ export const Address = sequelize.define(
   }
 );
 
-// Define the association
-Customer.hasMany(Address, { foreignKey: "customer_id", as: "addresses" });
-Address.belongsTo(Customer, { foreignKey: "customer_id", as: "customer" });
+// No associations defined - polymorphic relationship managed by user_id + user_type

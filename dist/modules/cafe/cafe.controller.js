@@ -11,4 +11,5 @@ const router = (0, express_1.Router)();
 const cafeService = new cafe_service_1.CafeService();
 router.patch("/upload-profile-image", auth_middleware_1.auth, (0, multer_upload_1.multerUpload)({ storeIn: multer_types_1.StoreInEnum.MEMORY }).single("profileImage"), cafeService.uploadProfileImage);
 router.patch("/update-basic-info", auth_middleware_1.auth, (0, validation_middleware_1.validation)(cafe_validation_1.updateBasicInfoSchema), cafeService.updateBasicInfo);
+router.get("/all-cafes", cafeService.allCafes);
 exports.default = router;

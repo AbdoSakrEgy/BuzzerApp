@@ -10,7 +10,7 @@ class AddressService {
     constructor() { }
     // ============================ addAddress ============================
     addAddress = async (req, res, next) => {
-        const user = res.locals.user;
+        const { userId, userType } = res.locals.payload;
         // step: validate request body
         const parsed = address_validation_1.addAddressSchema.safeParse(req.body);
         if (!parsed.success) {
@@ -22,11 +22,12 @@ class AddressService {
         const { label, city, area, street, building, floor, apartment, isDefault, } = parsed.data;
         // step: if isDefault is true, set all other addresses to not default
         if (isDefault) {
-            await address_model_1.Address.update({ isDefault: false }, { where: { customer_id: user.id } });
+            await address_model_1.Address.update({ isDefault: false }, { where: { user_id: userId, user_type: userType } });
         }
         // step: create address
         const address = await address_model_1.Address.create({
-            customer_id: user.id,
+            user_id: userId,
+            user_type: userType,
             label,
             city,
             area,
@@ -45,11 +46,11 @@ class AddressService {
     };
     // ============================ getAddress ============================
     getAddress = async (req, res, next) => {
-        const user = res.locals.user;
+        const { userId, userType } = res.locals.payload;
         const { id } = req.params;
-        // step: find address
+        // step: find address (check ownership by user_id and user_type)
         const address = await address_model_1.Address.findOne({
-            where: { id, customer_id: user.id },
+            where: { id, user_id: userId, user_type: userType },
         });
         if (!address) {
             throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Address not found");
@@ -62,12 +63,7 @@ class AddressService {
     };
     // ============================ getAllAddresses ============================
     getAllAddresses = async (req, res, next) => {
-        const user = res.locals.user;
-        // step: find all addresses for the customer
-        const addresses = await address_model_1.Address.findAll({
-            where: { customer_id: user.id },
-            order: [["isDefault", "DESC"]],
-        });
+        const addresses = await address_model_1.Address.findAll();
         return (0, response_handler_1.responseHandler)({
             res,
             message: "Addresses retrieved successfully",
@@ -76,7 +72,7 @@ class AddressService {
     };
     // ============================ updateAddress ============================
     updateAddress = async (req, res, next) => {
-        const user = res.locals.user;
+        const { userId, userType } = res.locals.payload;
         // step: validate request body
         const parsed = address_validation_1.updateAddressSchema.safeParse(req.body);
         if (!parsed.success) {
@@ -88,14 +84,14 @@ class AddressService {
         const { id, label, city, area, street, building, floor, apartment, isDefault, } = parsed.data;
         // step: check if address exists and belongs to the user
         const address = await address_model_1.Address.findOne({
-            where: { id, customer_id: user.id },
+            where: { id, user_id: userId, user_type: userType },
         });
         if (!address) {
             throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Address not found");
         }
         // step: if isDefault is true, set all other addresses to not default
         if (isDefault) {
-            await address_model_1.Address.update({ isDefault: false }, { where: { customer_id: user.id } });
+            await address_model_1.Address.update({ isDefault: false }, { where: { user_id: userId, user_type: userType } });
         }
         // step: update address
         await address_model_1.Address.update({
@@ -118,11 +114,11 @@ class AddressService {
     };
     // ============================ deleteAddress ============================
     deleteAddress = async (req, res, next) => {
-        const user = res.locals.user;
+        const { userId, userType } = res.locals.payload;
         const { id } = req.params;
         // step: check if address exists and belongs to the user
         const address = await address_model_1.Address.findOne({
-            where: { id, customer_id: user.id },
+            where: { id, user_id: userId, user_type: userType },
         });
         if (!address) {
             throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Address not found");
@@ -137,17 +133,17 @@ class AddressService {
     };
     // ============================ setDefaultAddress ============================
     setDefaultAddress = async (req, res, next) => {
-        const user = res.locals.user;
+        const { userId, userType } = res.locals.payload;
         const { id } = req.params;
         // step: check if address exists and belongs to the user
         const address = await address_model_1.Address.findOne({
-            where: { id, customer_id: user.id },
+            where: { id, user_id: userId, user_type: userType },
         });
         if (!address) {
             throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Address not found");
         }
         // step: set all addresses to not default
-        await address_model_1.Address.update({ isDefault: false }, { where: { customer_id: user.id } });
+        await address_model_1.Address.update({ isDefault: false }, { where: { user_id: userId, user_type: userType } });
         // step: set this address as default
         await address_model_1.Address.update({ isDefault: true }, { where: { id } });
         // step: get updated address

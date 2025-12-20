@@ -3,13 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Address = void 0;
 const db_connection_1 = require("../../DB/db.connection");
 const sequelize_1 = require("sequelize");
-const customer_model_1 = require("./customer.model");
+const global_types_1 = require("../../types/global.types");
 exports.Address = db_connection_1.sequelize.define("addresses", {
     id: { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    customer_id: {
+    user_id: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
-        references: { model: customer_model_1.Customer, key: "id" },
+        // No foreign key - polymorphic relationship (can be admin, customer, cafe, or restaurant)
+    },
+    user_type: {
+        type: sequelize_1.DataTypes.ENUM(...Object.values(global_types_1.RegisterEnum)),
+        allowNull: false,
     },
     label: {
         type: sequelize_1.DataTypes.STRING,
@@ -28,6 +32,4 @@ exports.Address = db_connection_1.sequelize.define("addresses", {
     timestamps: false,
     paranoid: false,
 });
-// Define the association
-customer_model_1.Customer.hasMany(exports.Address, { foreignKey: "customer_id", as: "addresses" });
-exports.Address.belongsTo(customer_model_1.Customer, { foreignKey: "customer_id", as: "customer" });
+// No associations defined - polymorphic relationship managed by user_id + user_type

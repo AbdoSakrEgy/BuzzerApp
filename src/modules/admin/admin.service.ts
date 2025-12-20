@@ -38,7 +38,7 @@ export class AdminService implements IAdminService {
       await Admin.destroy({ where: { id: accountId } });
     } else if (accountType == RegisterEnum.CUSTOMER) {
     } else if (accountType == RegisterEnum.CAFE) {
-    } else if (accountType == RegisterEnum.RESTAURENT) {
+    } else if (accountType == RegisterEnum.RESTAURANT) {
     }
     return responseHandler({
       res,
@@ -72,7 +72,11 @@ export class AdminService implements IAdminService {
       fileFromMulter: req.file as Express.Multer.File,
     });
     // step: update user
-    await Admin.update({ profileImage: Key }, { where: { id: user.id } });
+    const url = await createPresignedUrlToGetFileS3({ Key });
+    await Admin.update(
+      { profileImage_public_id: Key },
+      { where: { id: user.id } }
+    );
     return responseHandler({
       res,
       message: "Profile image uploaded successfully",
@@ -146,6 +150,19 @@ export class AdminService implements IAdminService {
       res,
       status: HttpStatusCode.OK,
       data: { category },
+    });
+  };
+
+  // ============================ allCategories ============================
+  allCategories = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const categories = await Category.findAll();
+    return responseHandler({
+      res,
+      data: { categories },
     });
   };
 

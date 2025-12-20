@@ -23,7 +23,7 @@ var RegisterEnum;
     RegisterEnum["ADMIN"] = "admin";
     RegisterEnum["CUSTOMER"] = "customer";
     RegisterEnum["CAFE"] = "cafe";
-    RegisterEnum["RESTAURENT"] = "restaurent";
+    RegisterEnum["RESTAURANT"] = "restaurant";
 })(RegisterEnum || (exports.RegisterEnum = RegisterEnum = {}));
 var OrderStatusEnum;
 (function (OrderStatusEnum) {

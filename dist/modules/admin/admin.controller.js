@@ -14,6 +14,7 @@ router.patch("/upload-profile-image", auth_middleware_1.auth, (0, multer_upload_
 router.patch("/update-basic-info", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.updateBasicInfoSchema), adminService.updateBasicInfo);
 router.post("/add-category", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.addCategorySchema), adminService.addCategory);
 router.get("/get-category", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.getCategorySchema), adminService.getCategory);
+router.get("/all-categories", adminService.allCategories);
 router.patch("/update-category", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.updateCategorySchema), adminService.updateCategory);
 router.delete("/delete-category", auth_middleware_1.auth, (0, validation_middleware_1.validation)(admin_validation_1.deleteCategorySchema), adminService.deleteCategory);
 exports.default = router;

@@ -12,7 +12,7 @@ exports.registerSchema = zod_1.default
         global_types_1.RegisterEnum.ADMIN,
         global_types_1.RegisterEnum.CUSTOMER,
         global_types_1.RegisterEnum.CAFE,
-        global_types_1.RegisterEnum.RESTAURENT,
+        global_types_1.RegisterEnum.RESTAURANT,
     ]),
     fullName: zod_1.default.string().min(3).max(50),
     email: zod_1.default.email().optional(),
@@ -46,7 +46,7 @@ exports.loginSchema = zod_1.default.object({
         global_types_1.RegisterEnum.ADMIN,
         global_types_1.RegisterEnum.CUSTOMER,
         global_types_1.RegisterEnum.CAFE,
-        global_types_1.RegisterEnum.RESTAURENT,
+        global_types_1.RegisterEnum.RESTAURANT,
     ]),
     phone: zod_1.default.string(),
 });
@@ -72,6 +72,6 @@ exports.logoutSchema = zod_1.default.object({
         global_types_1.RegisterEnum.ADMIN,
         global_types_1.RegisterEnum.CUSTOMER,
         global_types_1.RegisterEnum.CAFE,
-        global_types_1.RegisterEnum.RESTAURENT,
+        global_types_1.RegisterEnum.RESTAURANT,
     ]),
 });

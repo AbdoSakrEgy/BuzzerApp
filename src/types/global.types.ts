@@ -19,7 +19,7 @@ export enum RegisterEnum {
   ADMIN = "admin",
   CUSTOMER = "customer",
   CAFE = "cafe",
-  RESTAURENT = "restaurent",
+  RESTAURANT = "restaurant",
 }
 
 export enum OrderStatusEnum {

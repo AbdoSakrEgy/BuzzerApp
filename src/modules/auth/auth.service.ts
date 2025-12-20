@@ -40,7 +40,7 @@ export class AdminService implements IAdminService {
       UserModel = Customer;
     } else if (type == RegisterEnum.CAFE) {
       UserModel = Cafe;
-    } else if (type == RegisterEnum.RESTAURENT) {
+    } else if (type == RegisterEnum.RESTAURANT) {
       UserModel = Restaurant;
     }
     // step: check if email already exists
@@ -111,7 +111,7 @@ export class AdminService implements IAdminService {
       UserModel = Customer;
     } else if (type == RegisterEnum.CAFE) {
       UserModel = Cafe;
-    } else if (type == RegisterEnum.RESTAURENT) {
+    } else if (type == RegisterEnum.RESTAURANT) {
       UserModel = Restaurant;
     }
     // step: check user
@@ -246,7 +246,7 @@ export class AdminService implements IAdminService {
       UserModel = Customer;
     } else if (type == RegisterEnum.CAFE) {
       UserModel = Cafe;
-    } else if (type == RegisterEnum.RESTAURENT) {
+    } else if (type == RegisterEnum.RESTAURANT) {
       UserModel = Restaurant;
     }
     const user = res.locals.user;

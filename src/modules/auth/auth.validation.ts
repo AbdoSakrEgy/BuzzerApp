@@ -7,7 +7,7 @@ export const registerSchema = z
       RegisterEnum.ADMIN,
       RegisterEnum.CUSTOMER,
       RegisterEnum.CAFE,
-      RegisterEnum.RESTAURENT,
+      RegisterEnum.RESTAURANT,
     ]),
     fullName: z.string().min(3).max(50),
     email: z.email().optional(),
@@ -43,7 +43,7 @@ export const loginSchema = z.object({
     RegisterEnum.ADMIN,
     RegisterEnum.CUSTOMER,
     RegisterEnum.CAFE,
-    RegisterEnum.RESTAURENT,
+    RegisterEnum.RESTAURANT,
   ]),
   phone: z.string(),
 });
@@ -74,6 +74,6 @@ export const logoutSchema = z.object({
     RegisterEnum.ADMIN,
     RegisterEnum.CUSTOMER,
     RegisterEnum.CAFE,
-    RegisterEnum.RESTAURENT,
+    RegisterEnum.RESTAURANT,
   ]),
 });

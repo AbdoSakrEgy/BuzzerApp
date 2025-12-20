@@ -44,7 +44,7 @@ export const decodeToken = async ({
     user = await Customer.findOne({ where: { id: payload.userId } });
   } else if (payload.userType == RegisterEnum.CAFE) {
     user = await Cafe.findOne({ where: { id: payload.userId } });
-  } else if (payload.userType == RegisterEnum.RESTAURENT) {
+  } else if (payload.userType == RegisterEnum.RESTAURANT) {
     user = await Restaurant.findOne({ where: { id: payload.userId } });
   }
   // step: user existence

@@ -21,6 +21,7 @@ router.patch("/upload-profile-image",auth,multerUpload({ storeIn: StoreInEnum.ME
 router.patch("/update-basic-info",auth,validation(updateBasicInfoSchema),adminService.updateBasicInfo);
 router.post("/add-category",auth,validation(addCategorySchema),adminService.addCategory)
 router.get("/get-category",auth,validation(getCategorySchema),adminService.getCategory)
+router.get("/all-categories",adminService.allCategories)
 router.patch("/update-category",auth,validation(updateCategorySchema),adminService.updateCategory)
 router.delete("/delete-category",auth,validation(deleteCategorySchema),adminService.deleteCategory)
 

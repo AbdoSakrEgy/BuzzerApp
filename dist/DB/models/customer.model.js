@@ -49,7 +49,6 @@ exports.Customer = db_connection_1.sequelize.define("customers", {
     deletedBy: { type: sequelize_1.DataTypes.INTEGER, allowNull: true },
     is2FAActive: { type: sequelize_1.DataTypes.BOOLEAN, defaultValue: true },
     profileImage_public_id: { type: sequelize_1.DataTypes.STRING, allowNull: true },
-    profileImage_secure_url: { type: sequelize_1.DataTypes.STRING, allowNull: true },
     checkoutSessionId: { type: sequelize_1.DataTypes.STRING, allowNull: true },
     paymentIntentId: { type: sequelize_1.DataTypes.STRING, allowNull: true },
     refundId: { type: sequelize_1.DataTypes.STRING, allowNull: true },

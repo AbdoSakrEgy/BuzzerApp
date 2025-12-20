@@ -28,7 +28,7 @@ class AdminService {
         else if (type == global_types_1.RegisterEnum.CAFE) {
             UserModel = cafe_model_1.Cafe;
         }
-        else if (type == global_types_1.RegisterEnum.RESTAURENT) {
+        else if (type == global_types_1.RegisterEnum.RESTAURANT) {
             UserModel = restaurant_model_1.Restaurant;
         }
         // step: check if email already exists
@@ -80,7 +80,7 @@ class AdminService {
         else if (type == global_types_1.RegisterEnum.CAFE) {
             UserModel = cafe_model_1.Cafe;
         }
-        else if (type == global_types_1.RegisterEnum.RESTAURENT) {
+        else if (type == global_types_1.RegisterEnum.RESTAURANT) {
             UserModel = restaurant_model_1.Restaurant;
         }
         // step: check user
@@ -180,7 +180,7 @@ class AdminService {
         else if (type == global_types_1.RegisterEnum.CAFE) {
             UserModel = cafe_model_1.Cafe;
         }
-        else if (type == global_types_1.RegisterEnum.RESTAURENT) {
+        else if (type == global_types_1.RegisterEnum.RESTAURANT) {
             UserModel = restaurant_model_1.Restaurant;
         }
         const user = res.locals.user;

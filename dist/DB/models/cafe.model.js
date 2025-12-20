@@ -38,7 +38,6 @@ exports.Cafe = db_connection_1.sequelize.define("cafes", {
     isActive: { type: sequelize_1.DataTypes.BOOLEAN, defaultValue: true },
     deletedBy: { type: sequelize_1.DataTypes.INTEGER, allowNull: true },
     profileImage_public_id: { type: sequelize_1.DataTypes.STRING, allowNull: true },
-    profileImage_secure_url: { type: sequelize_1.DataTypes.STRING, allowNull: true },
 }, {
     freezeTableName: true,
     timestamps: false,

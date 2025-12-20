@@ -29,7 +29,8 @@ class RestaurantService {
             fileFromMulter: req.file,
         });
         // step: update user
-        await restaurant_model_1.Restaurant.update({ profileImage: Key }, { where: { id: user.id } });
+        const url = await (0, S3_services_1.createPresignedUrlToGetFileS3)({ Key });
+        await restaurant_model_1.Restaurant.update({ profileImage_public_id: Key }, { where: { id: user.id } });
         return (0, response_handler_1.responseHandler)({
             res,
             message: "Profile image uploaded successfully",
@@ -60,6 +61,14 @@ class RestaurantService {
             res,
             message: "Restaurant updated successfully",
             data: { restaurant: updatedRestaurant },
+        });
+    };
+    // ============================ allRestaurants ============================
+    allRestaurants = async (req, res, next) => {
+        const restaurants = await restaurant_model_1.Restaurant.findAll();
+        return (0, response_handler_1.responseHandler)({
+            res,
+            data: { restaurants },
         });
     };
 }

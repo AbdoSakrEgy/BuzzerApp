@@ -11,4 +11,5 @@ const router = (0, express_1.Router)();
 const restaurantService = new restaurant_service_1.RestaurantService();
 router.patch("/upload-profile-image", auth_middleware_1.auth, (0, multer_upload_1.multerUpload)({ storeIn: multer_types_1.StoreInEnum.MEMORY }).single("profileImage"), restaurantService.uploadProfileImage);
 router.patch("/update-basic-info", auth_middleware_1.auth, (0, validation_middleware_1.validation)(restaurant_validation_1.updateBasicInfoSchema), restaurantService.updateBasicInfo);
+router.get("/all-restaurants", restaurantService.allRestaurants);
 exports.default = router;

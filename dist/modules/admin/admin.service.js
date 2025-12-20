@@ -23,7 +23,7 @@ class AdminService {
         }
         else if (accountType == global_types_1.RegisterEnum.CAFE) {
         }
-        else if (accountType == global_types_1.RegisterEnum.RESTAURENT) {
+        else if (accountType == global_types_1.RegisterEnum.RESTAURANT) {
         }
         return (0, response_handler_1.responseHandler)({
             res,
@@ -52,7 +52,8 @@ class AdminService {
             fileFromMulter: req.file,
         });
         // step: update user
-        await admin_model_1.Admin.update({ profileImage: Key }, { where: { id: user.id } });
+        const url = await (0, S3_services_1.createPresignedUrlToGetFileS3)({ Key });
+        await admin_model_1.Admin.update({ profileImage_public_id: Key }, { where: { id: user.id } });
         return (0, response_handler_1.responseHandler)({
             res,
             message: "Profile image uploaded successfully",
@@ -108,6 +109,14 @@ class AdminService {
             res,
             status: http_status_code_1.HttpStatusCode.OK,
             data: { category },
+        });
+    };
+    // ============================ allCategories ============================
+    allCategories = async (req, res, next) => {
+        const categories = await category_model_1.Category.findAll();
+        return (0, response_handler_1.responseHandler)({
+            res,
+            data: { categories },
         });
     };
     // ============================ updateCategory ============================

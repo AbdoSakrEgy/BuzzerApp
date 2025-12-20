@@ -13,5 +13,6 @@ const restaurantService = new RestaurantService();
 
 router.patch("/upload-profile-image",auth,multerUpload({ storeIn: StoreInEnum.MEMORY }).single("profileImage"),restaurantService.uploadProfileImage);
 router.patch("/update-basic-info",auth,validation(updateBasicInfoSchema),restaurantService.updateBasicInfo);
+router.get("/all-restaurants",restaurantService.allRestaurants);
 
 export default router;

@@ -1,6 +1,9 @@
 import { Restaurant } from "./../../DB/models/restaurant.model";
 import { NextFunction, Request, Response } from "express";
-import { uploadSingleSmallFileS3 } from "../../utils/S3-AWS/S3.services";
+import {
+  createPresignedUrlToGetFileS3,
+  uploadSingleSmallFileS3,
+} from "../../utils/S3-AWS/S3.services";
 import { AppError } from "../../core/errors/app.error";
 import { HttpStatusCode } from "../../core/http/http.status.code";
 import { responseHandler } from "../../core/handlers/response.handler";
@@ -35,7 +38,11 @@ export class RestaurantService implements IRestaurantService {
       fileFromMulter: req.file as Express.Multer.File,
     });
     // step: update user
-    await Restaurant.update({ profileImage: Key }, { where: { id: user.id } });
+    const url = await createPresignedUrlToGetFileS3({ Key });
+    await Restaurant.update(
+      { profileImage_public_id: Key },
+      { where: { id: user.id } }
+    );
     return responseHandler({
       res,
       message: "Profile image uploaded successfully",
@@ -74,6 +81,19 @@ export class RestaurantService implements IRestaurantService {
       res,
       message: "Restaurant updated successfully",
       data: { restaurant: updatedRestaurant },
+    });
+  };
+
+  // ============================ allRestaurants ============================
+  allRestaurants = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response> => {
+    const restaurants = await Restaurant.findAll();
+    return responseHandler({
+      res,
+      data: { restaurants },
     });
   };
 }

@@ -49,7 +49,6 @@ export const Admin = sequelize.define(
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     deletedBy: { type: DataTypes.INTEGER, allowNull: true },
     profileImage_public_id: { type: DataTypes.STRING, allowNull: true },
-    profileImage_secure_url: { type: DataTypes.STRING, allowNull: true },
   },
   {
     freezeTableName: true,

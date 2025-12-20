@@ -44,7 +44,7 @@ const decodeToken = async ({ authorization, tokenType = TokenTypesEnum.access, }
     else if (payload.userType == global_types_js_1.RegisterEnum.CAFE) {
         user = await cafe_model_js_1.Cafe.findOne({ where: { id: payload.userId } });
     }
-    else if (payload.userType == global_types_js_1.RegisterEnum.RESTAURENT) {
+    else if (payload.userType == global_types_js_1.RegisterEnum.RESTAURANT) {
         user = await restaurant_model_js_1.Restaurant.findOne({ where: { id: payload.userId } });
     }
     // step: user existence

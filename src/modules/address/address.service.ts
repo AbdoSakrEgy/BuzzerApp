@@ -16,7 +16,7 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const user = res.locals.user;
+    const { userId, userType } = res.locals.payload;
     // step: validate request body
     const parsed = addAddressSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -39,12 +39,13 @@ export class AddressService implements IAddressService {
     if (isDefault) {
       await Address.update(
         { isDefault: false },
-        { where: { customer_id: user.id } }
+        { where: { user_id: userId, user_type: userType } }
       );
     }
     // step: create address
     const address = await Address.create({
-      customer_id: user.id,
+      user_id: userId,
+      user_type: userType,
       label,
       city,
       area,
@@ -68,11 +69,11 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const user = res.locals.user;
+    const { userId, userType } = res.locals.payload;
     const { id } = req.params;
-    // step: find address
+    // step: find address (check ownership by user_id and user_type)
     const address = await Address.findOne({
-      where: { id, customer_id: user.id },
+      where: { id, user_id: userId, user_type: userType },
     });
     if (!address) {
       throw new AppError(HttpStatusCode.NOT_FOUND, "Address not found");
@@ -90,12 +91,7 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const user = res.locals.user;
-    // step: find all addresses for the customer
-    const addresses = await Address.findAll({
-      where: { customer_id: user.id },
-      order: [["isDefault", "DESC"]],
-    });
+    const addresses = await Address.findAll();
     return responseHandler({
       res,
       message: "Addresses retrieved successfully",
@@ -109,7 +105,7 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const user = res.locals.user;
+    const { userId, userType } = res.locals.payload;
     // step: validate request body
     const parsed = updateAddressSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -131,7 +127,7 @@ export class AddressService implements IAddressService {
     }: updateAddressDTO = parsed.data;
     // step: check if address exists and belongs to the user
     const address = await Address.findOne({
-      where: { id, customer_id: user.id },
+      where: { id, user_id: userId, user_type: userType },
     });
     if (!address) {
       throw new AppError(HttpStatusCode.NOT_FOUND, "Address not found");
@@ -140,7 +136,7 @@ export class AddressService implements IAddressService {
     if (isDefault) {
       await Address.update(
         { isDefault: false },
-        { where: { customer_id: user.id } }
+        { where: { user_id: userId, user_type: userType } }
       );
     }
     // step: update address
@@ -172,11 +168,11 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const user = res.locals.user;
+    const { userId, userType } = res.locals.payload;
     const { id } = req.params;
     // step: check if address exists and belongs to the user
     const address = await Address.findOne({
-      where: { id, customer_id: user.id },
+      where: { id, user_id: userId, user_type: userType },
     });
     if (!address) {
       throw new AppError(HttpStatusCode.NOT_FOUND, "Address not found");
@@ -196,11 +192,11 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const user = res.locals.user;
+    const { userId, userType } = res.locals.payload;
     const { id } = req.params;
     // step: check if address exists and belongs to the user
     const address = await Address.findOne({
-      where: { id, customer_id: user.id },
+      where: { id, user_id: userId, user_type: userType },
     });
     if (!address) {
       throw new AppError(HttpStatusCode.NOT_FOUND, "Address not found");
@@ -208,7 +204,7 @@ export class AddressService implements IAddressService {
     // step: set all addresses to not default
     await Address.update(
       { isDefault: false },
-      { where: { customer_id: user.id } }
+      { where: { user_id: userId, user_type: userType } }
     );
     // step: set this address as default
     await Address.update({ isDefault: true }, { where: { id } });
