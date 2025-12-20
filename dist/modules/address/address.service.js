@@ -46,11 +46,9 @@ class AddressService {
     };
     // ============================ getAddress ============================
     getAddress = async (req, res, next) => {
-        const { userId, userType } = res.locals.payload;
         const { id } = req.params;
-        // step: find address (check ownership by user_id and user_type)
         const address = await address_model_1.Address.findOne({
-            where: { id, user_id: userId, user_type: userType },
+            where: { id },
         });
         if (!address) {
             throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Address not found");
@@ -133,17 +131,16 @@ class AddressService {
     };
     // ============================ setDefaultAddress ============================
     setDefaultAddress = async (req, res, next) => {
-        const { userId, userType } = res.locals.payload;
         const { id } = req.params;
         // step: check if address exists and belongs to the user
         const address = await address_model_1.Address.findOne({
-            where: { id, user_id: userId, user_type: userType },
+            where: { id },
         });
         if (!address) {
             throw new app_error_1.AppError(http_status_code_1.HttpStatusCode.NOT_FOUND, "Address not found");
         }
         // step: set all addresses to not default
-        await address_model_1.Address.update({ isDefault: false }, { where: { user_id: userId, user_type: userType } });
+        await address_model_1.Address.update({ isDefault: false }, { where: { id } });
         // step: set this address as default
         await address_model_1.Address.update({ isDefault: true }, { where: { id } });
         // step: get updated address

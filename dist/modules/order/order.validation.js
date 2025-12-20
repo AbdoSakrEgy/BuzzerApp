@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOrderSchema = exports.updateOrderSchema = exports.getOrderSchema = exports.addOrderSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
+const global_types_1 = require("../../types/global.types");
 // Helper to transform string numbers to integers
 const integerFromString = zod_1.default
     .union([zod_1.default.number(), zod_1.default.string()])
@@ -27,7 +28,12 @@ exports.getOrderSchema = zod_1.default.object({
 // updateOrderSchema
 exports.updateOrderSchema = zod_1.default.object({
     order_id: integerFromString,
-    status: zod_1.default.enum(["pending", "paid", "cancelled", "refunded"]),
+    status: zod_1.default.enum([
+        global_types_1.OrderStatusEnum.PENDING,
+        global_types_1.OrderStatusEnum.PAID,
+        global_types_1.OrderStatusEnum.CANCELLED,
+        global_types_1.OrderStatusEnum.REFUNDED,
+    ]),
 });
 // deleteOrderSchema
 exports.deleteOrderSchema = zod_1.default.object({

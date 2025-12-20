@@ -24,9 +24,7 @@ export enum RegisterEnum {
 
 export enum OrderStatusEnum {
   PENDING = "pending",
-  PROCESSING = "processing",
-  SHIPPED = "shipped",
-  DELIVERED = "delivered",
+  PAID = "paid",
   CANCELLED = "cancelled",
   REFUNDED = "refunded",
 }

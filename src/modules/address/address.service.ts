@@ -69,11 +69,9 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const { userId, userType } = res.locals.payload;
     const { id } = req.params;
-    // step: find address (check ownership by user_id and user_type)
     const address = await Address.findOne({
-      where: { id, user_id: userId, user_type: userType },
+      where: { id },
     });
     if (!address) {
       throw new AppError(HttpStatusCode.NOT_FOUND, "Address not found");
@@ -192,20 +190,16 @@ export class AddressService implements IAddressService {
     res: Response,
     next: NextFunction
   ): Promise<Response> => {
-    const { userId, userType } = res.locals.payload;
     const { id } = req.params;
     // step: check if address exists and belongs to the user
     const address = await Address.findOne({
-      where: { id, user_id: userId, user_type: userType },
+      where: { id },
     });
     if (!address) {
       throw new AppError(HttpStatusCode.NOT_FOUND, "Address not found");
     }
     // step: set all addresses to not default
-    await Address.update(
-      { isDefault: false },
-      { where: { user_id: userId, user_type: userType } }
-    );
+    await Address.update({ isDefault: false }, { where: { id } });
     // step: set this address as default
     await Address.update({ isDefault: true }, { where: { id } });
     // step: get updated address

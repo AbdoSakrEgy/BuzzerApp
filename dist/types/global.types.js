@@ -28,9 +28,7 @@ var RegisterEnum;
 var OrderStatusEnum;
 (function (OrderStatusEnum) {
     OrderStatusEnum["PENDING"] = "pending";
-    OrderStatusEnum["PROCESSING"] = "processing";
-    OrderStatusEnum["SHIPPED"] = "shipped";
-    OrderStatusEnum["DELIVERED"] = "delivered";
+    OrderStatusEnum["PAID"] = "paid";
     OrderStatusEnum["CANCELLED"] = "cancelled";
     OrderStatusEnum["REFUNDED"] = "refunded";
 })(OrderStatusEnum || (exports.OrderStatusEnum = OrderStatusEnum = {}));

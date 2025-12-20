@@ -1,4 +1,5 @@
 import z from "zod";
+import { OrderStatusEnum } from "../../types/global.types";
 
 // Helper to transform string numbers to integers
 const integerFromString = z
@@ -24,7 +25,12 @@ export const getOrderSchema = z.object({
 // updateOrderSchema
 export const updateOrderSchema = z.object({
   order_id: integerFromString,
-  status: z.enum(["pending", "paid", "cancelled", "refunded"]),
+  status: z.enum([
+    OrderStatusEnum.PENDING,
+    OrderStatusEnum.PAID,
+    OrderStatusEnum.CANCELLED,
+    OrderStatusEnum.REFUNDED,
+  ]),
 });
 
 // deleteOrderSchema
